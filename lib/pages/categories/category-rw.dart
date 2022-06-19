@@ -100,20 +100,20 @@ class _CategoryRWState extends State<CategoryRW> {
                             ),
                           ),
                           Container(
-                            width: 190,
+                            width: 150,
                             child: Text("Amategeko",
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
                                     color: whiteColor,
 
-                                    fontSize: 30,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w600)),
                           ),
                         ],
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 23),
+                      margin: EdgeInsets.only(top: 10),
                       child: Row(
                         children: [
                           AppIcon(icon: Icons.search),
@@ -234,14 +234,14 @@ class _CategoryRWState extends State<CategoryRW> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 270,
+                                width: 220,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(categories[index].title , style: TextStyle(color: appDarkColor, fontSize: 20, fontWeight: FontWeight.bold),),
+                                    Text(categories[index].title , style: TextStyle(color: appDarkColor, fontSize: 16, fontWeight: FontWeight.bold),),
                                     SizedBox(height: 4,),
-                                    Text(categories[index].law_no, style: TextStyle(color: blackColor, fontSize: 18, fontWeight: FontWeight.bold),),
+                                    Text(categories[index].law_no, style: TextStyle(color: blackColor, fontSize: 14, fontWeight: FontWeight.bold),),
 
                                   ],
                                 ),

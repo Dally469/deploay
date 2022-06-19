@@ -52,7 +52,7 @@ class _InformationFRState extends State<InformationFR> {
                             ),
                           ),
                           Container(
-                            width: 190,
+                            width: 150,
                             child: Text("Table des matières",
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
@@ -157,7 +157,7 @@ class _InformationFRState extends State<InformationFR> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: 270,
+                                                width: 220,
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -168,7 +168,7 @@ class _InformationFRState extends State<InformationFR> {
                                                       "POLITIQUE DE DÉCENTRALISATION ",
                                                       style: TextStyle(
                                                           color: appDarkColor,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
@@ -274,7 +274,7 @@ class _InformationFRState extends State<InformationFR> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: 270,
+                                                width: 220,
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -285,21 +285,14 @@ class _InformationFRState extends State<InformationFR> {
                                                       "LOIS",
                                                       style: TextStyle(
                                                           color: appDarkColor,
-                                                          fontSize: 18,
+                                                          fontSize: 14,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
                                                     SizedBox(
                                                       height: 4,
                                                     ),
-                                                    Text(
-                                                        "60ème Année Journal Officiel n° Spécial du 09/10/2021",
-                                                        textAlign:
-                                                            TextAlign.justify,
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors
-                                                                .black45)),
+
                                                   ],
                                                 ),
                                               ),

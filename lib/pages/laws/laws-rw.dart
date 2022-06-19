@@ -100,7 +100,7 @@ class _LawsRWState extends State<LawsRW> {
                             ),
                           ),
                           Container(
-                            width: 240,
+                            width: 220,
                             child: Text(widget.title,
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
@@ -213,11 +213,11 @@ class _LawsRWState extends State<LawsRW> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 270,
+                                width: 230,
                                 child: ExpandablePanel(
                                   header: Padding(
                                     padding: const EdgeInsets.only(top: 5),
-                                    child: Text(laws[index].title, style: TextStyle(fontSize: 17, color: appDarkColor),),
+                                    child: Text(laws[index].title, style: TextStyle(fontSize: 16, color: appDarkColor),),
                                   ),
                                   collapsed: Text(' ', softWrap: true, textAlign: TextAlign.justify, overflow: TextOverflow.ellipsis,),
                                   expanded: Padding(

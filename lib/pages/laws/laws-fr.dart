@@ -90,7 +90,7 @@ class _LawsFRState extends State<LawsFR> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 25),
+                      margin: EdgeInsets.only(top: 18),
                       child: Row(
                         children: [
                           GestureDetector(
@@ -101,11 +101,12 @@ class _LawsFRState extends State<LawsFR> {
                             ),
                           ),
                           Container(
-                            width: 240,
+                            width: 220,
                             child: Text(widget.title,
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
                                     color: whiteColor,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w600)),
                           ),
                         ],
@@ -214,7 +215,7 @@ class _LawsFRState extends State<LawsFR> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 270,
+                                width: 250,
                                 child: ExpandablePanel(
                                   header: Padding(
                                     padding: const EdgeInsets.only(top: 5),

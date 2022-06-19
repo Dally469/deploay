@@ -52,19 +52,19 @@ class _InformationRWState extends State<InformationRW> {
                             ),
                           ),
                           Container(
-                            width: 190,
+                            width: 150,
                             child: Text("Ishakiro",
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
                                     color: whiteColor,
-                                    fontSize: 25,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w600)),
                           ),
                         ],
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 23),
+                      margin: EdgeInsets.only(top: 13),
                       child: Row(
                         children: [
                           AppIcon(icon: Icons.search),
@@ -157,7 +157,7 @@ class _InformationRWState extends State<InformationRW> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: 270,
+                                                width: 220,
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -274,7 +274,7 @@ class _InformationRWState extends State<InformationRW> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: 270,
+                                                width: 220,
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -285,21 +285,14 @@ class _InformationRWState extends State<InformationRW> {
                                                       "AMATEGEKO",
                                                       style: TextStyle(
                                                           color: appDarkColor,
-                                                          fontSize: 18,
+                                                          fontSize: 15,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
                                                     SizedBox(
                                                       height: 4,
                                                     ),
-                                                    Text(
-                                                        "Umwaka wa 60 Igazeti ya Leta n° Idasanzwe yo ku wa 09/10/2021",
-                                                        textAlign:
-                                                            TextAlign.justify,
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            color: Colors
-                                                                .black45)),
+
                                                   ],
                                                 ),
                                               ),

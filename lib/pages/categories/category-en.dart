@@ -101,12 +101,12 @@ class _CategoryENState extends State<CategoryEN> {
                             ),
                           ),
                           Container(
-                            width: 190,
+                            width: 140,
                             child: Text("Laws",
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
                                     color: whiteColor,
-                                    fontSize: 30,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w600)),
                           ),
                         ],
@@ -143,7 +143,7 @@ class _CategoryENState extends State<CategoryEN> {
             children: [
               categories.isEmpty
                   ? Container(
-                      height: 600,
+                      height: 400,
                       margin: EdgeInsets.only(
                           bottom: 10, left: 8, right: 8, top: 10),
                       child: Center(
@@ -234,7 +234,7 @@ class _CategoryENState extends State<CategoryEN> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 270,
+                                width: 230,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -243,7 +243,7 @@ class _CategoryENState extends State<CategoryEN> {
                                       categories[index].title,
                                       style: TextStyle(
                                           color: appDarkColor,
-                                          fontSize: 20,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
@@ -253,7 +253,7 @@ class _CategoryENState extends State<CategoryEN> {
                                       categories[index].law_no,
                                       style: TextStyle(
                                           color: blackColor,
-                                          fontSize: 18,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
 

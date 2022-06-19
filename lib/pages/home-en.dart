@@ -99,7 +99,7 @@ class _HomeENState extends State<HomeEN> {
                             ),
                           ),
                           Container(
-                            width: 200,
+                            width: 150,
                             child: Text(widget.title,
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
@@ -111,7 +111,7 @@ class _HomeENState extends State<HomeEN> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 23),
+                      margin: EdgeInsets.only(top: 10),
                       child: Row(
                         children: [
                           AppIcon(icon: Icons.search),
@@ -227,7 +227,7 @@ class _HomeENState extends State<HomeEN> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: 260,
+                                      width: 220,
                                       child: Text(
                                         chapters[index].text,
                                         style: TextStyle(color: appDarkColor),
@@ -258,7 +258,7 @@ class _HomeENState extends State<HomeEN> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: 260,
+                                      width: 220,
                                       child: ExpandablePanel(
                                         header: Padding(
                                           padding:
@@ -271,7 +271,7 @@ class _HomeENState extends State<HomeEN> {
                                           ),
                                         ),
                                         collapsed: Text(
-                                          ' ',
+                                          '',
                                           softWrap: true,
                                           textAlign: TextAlign.justify,
                                           overflow: TextOverflow.ellipsis,
@@ -280,7 +280,7 @@ class _HomeENState extends State<HomeEN> {
                                           padding:
                                               const EdgeInsets.only(top: 5),
                                           child: Text(
-                                              chapters[index].description,
+                                              chapters[index].details.toString(),
                                               softWrap: true,
                                               textAlign: TextAlign.justify),
                                         ),

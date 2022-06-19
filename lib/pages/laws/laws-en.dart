@@ -102,7 +102,7 @@ class _LawsENState extends State<LawsEN> {
                             ),
                           ),
                           Container(
-                            width: 240,
+                            width: 220,
                             child: Text(widget.title,
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
@@ -158,6 +158,7 @@ class _LawsENState extends State<LawsEN> {
                           bottom: 10, left: 8, right: 8, top: 10),
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
+                          physics: AlwaysScrollableScrollPhysics(),
                           itemCount: laws.length,
                           itemBuilder: (context, position) {
                             return _buildLawsItem(position);
@@ -215,11 +216,11 @@ class _LawsENState extends State<LawsEN> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 270,
+                                width: 220,
                                 child: ExpandablePanel(
                                   header: Padding(
                                     padding: const EdgeInsets.only(top: 5),
-                                    child: Text(laws[index].title, style: TextStyle(fontSize: 17, color: appDarkColor),),
+                                    child: Text(laws[index].title, style: TextStyle(fontSize: 16, color: appDarkColor),),
                                   ),
                                   collapsed: Text(' ', softWrap: true, textAlign: TextAlign.justify, overflow: TextOverflow.ellipsis,),
                                   expanded: Padding(

@@ -99,7 +99,7 @@ class _HomeRWState extends State<HomeRW> {
                             ),
                           ),
                           Container(
-                            width: 200,
+                            width: 150,
                             child: Text(widget.title,
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
@@ -111,7 +111,7 @@ class _HomeRWState extends State<HomeRW> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 23),
+                      margin: EdgeInsets.only(top: 10),
                       child: Row(
                         children: [
                           AppIcon(icon: Icons.search),
@@ -220,7 +220,7 @@ class _HomeRWState extends State<HomeRW> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                              Container(
-                                width: 260,
+                                width: 220,
                                 
                                 child: Text(chapters[index].text, style: TextStyle(color: appDarkColor),),
                               ),
@@ -250,16 +250,16 @@ class _HomeRWState extends State<HomeRW> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 260,
+                                width: 220,
                                 child: ExpandablePanel(
                                   header: Padding(
                                     padding: const EdgeInsets.only(top: 5),
-                                    child: Text(chapters[index].text, style: TextStyle(fontSize: 16, color: appDarkColor),),
+                                    child: Text(chapters[index].text, style: TextStyle(fontSize: 14, color: appDarkColor),),
                                   ),
                                   collapsed: Text(' ', softWrap: true, textAlign: TextAlign.justify, overflow: TextOverflow.ellipsis,),
                                   expanded: Padding(
                                     padding: const EdgeInsets.only(top: 5),
-                                    child: Text(chapters[index].description, softWrap: true, textAlign: TextAlign.justify),
+                                    child: Text(chapters[index].details.toString(), softWrap: true, textAlign: TextAlign.justify),
                                   ),
                                   
                                 ),

@@ -53,12 +53,12 @@ class _InformationENState extends State<InformationEN> {
                             ),
                           ),
                           Container(
-                            width: 190,
+                            width: 150,
                             child: Text("Table of Contents",
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
                                     color: whiteColor,
-                                    fontSize: 20,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w600)),
                           ),
                         ],
@@ -151,12 +151,12 @@ class _InformationENState extends State<InformationEN> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Container(
-                                              width: 270,
+                                              width: 220,
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                           mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                  Text("DECENTRALIZATION POLICY", style: TextStyle(color: appDarkColor, fontSize: 18, fontWeight: FontWeight.bold),),
+                                                  Text("DECENTRALIZATION POLICY", style: TextStyle(color: appDarkColor, fontSize: 15, fontWeight: FontWeight.bold),),
                                                   SizedBox(height: 4,),
 
                                                 ],
@@ -243,15 +243,14 @@ class _InformationENState extends State<InformationEN> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Container(
-                                              width: 270,
+                                              width: 220,
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                           mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                  Text("LAWS", style: TextStyle(color: appDarkColor, fontSize: 18, fontWeight: FontWeight.bold),),
+                                                  Text("LAWS", style: TextStyle(color: appDarkColor, fontSize: 15, fontWeight: FontWeight.bold),),
                                                   SizedBox(height: 4,),
-                                                  Text("Year 60 Official Gazette n° Special of 09/10/2021", textAlign: TextAlign.justify,style: TextStyle(
-                                                    fontSize: 15, color: Colors.black45)),
+
                                                 ],
                                               ),
                                             ),

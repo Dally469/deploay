@@ -284,7 +284,7 @@ class _KglHomeRWState extends State<KglHomeRW> {
                                           padding:
                                               const EdgeInsets.only(top: 5),
                                           child: Text(
-                                              chapters[index].description,
+                                              chapters[index].details,
                                               softWrap: true,
                                               textAlign: TextAlign.justify),
                                         ),

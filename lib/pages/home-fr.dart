@@ -29,6 +29,7 @@ class _HomeFRState extends State<HomeFR> {
   void initState() {
     super.initState();
     _initData();
+    print(widget.id);
   }
 
   _initData() async {
@@ -100,7 +101,7 @@ class _HomeFRState extends State<HomeFR> {
                             ),
                           ),
                           Container(
-                            width: 200,
+                            width: 150,
                             child: Text(widget.title,
                             overflow: TextOverflow.visible,
                                 style: TextStyle(
@@ -112,7 +113,7 @@ class _HomeFRState extends State<HomeFR> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 23),
+                      margin: EdgeInsets.only(top: 10),
                       child: Row(
                         children: [
                           AppIcon(icon: Icons.search),
@@ -140,34 +141,40 @@ class _HomeFRState extends State<HomeFR> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              chapters.isEmpty ?
-              Container(
+              chapters.isEmpty
+                  ? Container(
                 height: 600,
-                margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
+                margin: EdgeInsets.only(
+                    bottom: 10, left: 8, right: 8, top: 10),
                 child: Center(
-                  child: SpinKitDoubleBounce(color: appColor,size: 70,),
-                ), 
-              ):
-              Container(
+                  child: SpinKitDoubleBounce(
+                    color: appColor,
+                    size: 70,
+                  ),
+                ),
+              )
+                  : Container(
                 height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
+                margin: EdgeInsets.only(
+                    bottom: 10, left: 8, right: 8, top: 10),
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: AlwaysScrollableScrollPhysics(),
                     itemCount: chapters.length,
                     itemBuilder: (context, position) {
                       return GestureDetector(
-                        onTap: () {
-                          widget.id.toString() == "3" || widget.id.toString() == "2" ?
-                          Navigator.push(
+                          onTap: () {
+                            widget.id.toString() == "3" || widget.id.toString() == "2" ?
+                            Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => LawsFR(
-                                chapters[position].id,
-                                chapters[position].text,
-                              )),
+                              MaterialPageRoute(
+                                  builder: (context) => LawsFR(
+                                    chapters[position].id,
+                                    chapters[position].text,
+                                  )),
                             ):'';
-                        }, child: _buildShopItem(position)
-                        );
+                          },
+                          child: _buildShopItem(position));
                     }),
               ),
             ],
@@ -193,12 +200,12 @@ class _HomeFRState extends State<HomeFR> {
                       blurRadius: 5)
                 ]),
             child: Container(
-              padding: EdgeInsets.only(left: 5, right: 5, top: 5),
+              padding: EdgeInsets.only(left: 0, right: 5, top: 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                   mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
@@ -208,12 +215,12 @@ class _HomeFRState extends State<HomeFR> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border:
-                              Border.all(color: overlayWhiteColor, width: 6),
+                          Border.all(color: overlayWhiteColor, width: 6),
                         ),
                         child: Image.asset("assets/images/rwlogo.png"),
                       ),
-                      widget.id.toString() == "3" || widget.id.toString() == "2" ?
-                      Padding(
+                      widget.id.toString() == "3" || widget.id.toString() == "2"
+                          ? Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Container(
                           margin: EdgeInsets.only(left: 3),
@@ -221,29 +228,30 @@ class _HomeFRState extends State<HomeFR> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                             Container(
-                                width: 260,
-                                
-                                child: Text(chapters[index].text, style: TextStyle(color: appDarkColor),),
+                              Container(
+                                width: 220,
+                                child: Text(
+                                  chapters[index].text,
+                                  style: TextStyle(color: appDarkColor),
+                                ),
                               ),
-                            
                               SizedBox(
                                 height: 4,
                               ),
-                               
                               Text(
                                   "Articles : " +
                                       chapters[index].articles_count,
                                   style: TextStyle(
-                                      fontSize: 15, color: Colors.black45)),
+                                      fontSize: 15,
+                                      color: Colors.black45)),
                               SizedBox(
                                 height: 4,
                               ),
                             ],
                           ),
                         ),
-                      ) :
-                       Padding(
+                      )
+                          : Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Container(
                           margin: EdgeInsets.only(left: 0),
@@ -252,21 +260,34 @@ class _HomeFRState extends State<HomeFR> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 260,
+                                width: 220,
                                 child: ExpandablePanel(
                                   header: Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(chapters[index].text, style: TextStyle(fontSize: 16, color: appDarkColor),),
+                                    padding:
+                                    const EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      chapters[index].text,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: appDarkColor),
+                                    ),
                                   ),
-                                  collapsed: Text(' ', softWrap: true, textAlign: TextAlign.justify, overflow: TextOverflow.ellipsis,),
+                                  collapsed: Text(
+                                    ' ',
+                                    softWrap: true,
+                                    textAlign: TextAlign.justify,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                   expanded: Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(chapters[index].description, softWrap: true, textAlign: TextAlign.justify),
+                                    padding:
+                                    const EdgeInsets.only(top: 5),
+                                    child: Text(
+                                        chapters[index].details.toString(),
+                                        softWrap: true,
+                                        textAlign: TextAlign.justify),
                                   ),
-                                  
                                 ),
                               ),
-                             
                               SizedBox(
                                 height: 4,
                               ),
@@ -284,7 +305,6 @@ class _HomeFRState extends State<HomeFR> {
             ),
           ),
         ),
-        
       ],
     );
   }

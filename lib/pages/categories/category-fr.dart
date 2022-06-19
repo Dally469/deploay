@@ -101,7 +101,7 @@ class _CategoryFRState extends State<CategoryFR> {
                             ),
                           ),
                          Container(
-                            width: 190,
+                            width: 150,
                             child: Text("Lois",
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
@@ -141,18 +141,22 @@ class _CategoryFRState extends State<CategoryFR> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-             
-              categories.isEmpty ?
-              Container(
-                height: 600,
-                margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
+              categories.isEmpty
+                  ? Container(
+                height: 400,
+                margin: EdgeInsets.only(
+                    bottom: 10, left: 8, right: 8, top: 10),
                 child: Center(
-                  child: SpinKitDoubleBounce(color: appColor,size: 70,),
-                ), 
-              ):
-              Container(
+                  child: SpinKitDoubleBounce(
+                    color: appColor,
+                    size: 70,
+                  ),
+                ),
+              )
+                  : Container(
                 height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
+                margin: EdgeInsets.only(
+                    bottom: 10, left: 8, right: 8, top: 10),
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     physics: NeverScrollableScrollPhysics(),
@@ -164,14 +168,15 @@ class _CategoryFRState extends State<CategoryFR> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Orders("Bientôt disponible..")),
+                                  builder: (context) => Orders("Coming soon...")),
                             ):
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => HomeFR(
-                                categories[position].id,
-                                categories[position].title,
-                              )),
+                              MaterialPageRoute(
+                                  builder: (context) => HomeFR(
+                                    categories[position].id,
+                                    categories[position].title,
+                                  )),
                             );
                           }),
                           child: _buildCategoryItem(position));
@@ -200,23 +205,23 @@ class _CategoryFRState extends State<CategoryFR> {
                       blurRadius: 5)
                 ]),
             child: Container(
-              padding: EdgeInsets.only(left: 0, right: 5, top: 5),
+              padding: EdgeInsets.only(left: 0, right: 3, top: 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                                         crossAxisAlignment: CrossAxisAlignment.start,
-
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         height: 35,
                         width: 35,
-                        margin: EdgeInsets.all(3),
+                        margin: EdgeInsets.all(2),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: overlayWhiteColor, width: 3),
+                          border:
+                          Border.all(color: overlayWhiteColor, width: 3),
                         ),
                         child: Image.asset("assets/images/rwlogo.png"),
                       ),
@@ -229,14 +234,28 @@ class _CategoryFRState extends State<CategoryFR> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 270,
+                                width: 230,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(categories[index].title , style: TextStyle(color: appDarkColor, fontSize: 20, fontWeight: FontWeight.bold),),
-                                    SizedBox(height: 4,),
-                                    Text(categories[index].law_no, style: TextStyle(color: blackColor, fontSize: 18, fontWeight: FontWeight.bold),),
+                                    Text(
+                                      categories[index].title,
+                                      style: TextStyle(
+                                          color: appDarkColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      categories[index].law_no,
+                                      style: TextStyle(
+                                          color: blackColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
 
                                   ],
                                 ),
@@ -245,10 +264,13 @@ class _CategoryFRState extends State<CategoryFR> {
                                 height: 4,
                               ),
                               Text(
-                                  "Articles : " +
+                                  categories[index].id == "1"
+                                      ? "Articles : " +
+                                      categories[index].chapters_count
+                                      : "Chapitres : " +
                                       categories[index].chapters_count,
                                   style: TextStyle(
-                                      fontSize: 14, color: appColor)),
+                                      fontSize: 14, color: appDarkColor)),
                               SizedBox(
                                 height: 4,
                               ),
@@ -266,7 +288,6 @@ class _CategoryFRState extends State<CategoryFR> {
             ),
           ),
         ),
-        
       ],
     );
   }
