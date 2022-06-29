@@ -33,7 +33,7 @@ class _LawsFRState extends State<LawsFR> {
 
   _initData() async {
 
-    String fileName = "articleDataFR.json";
+    String fileName = widget.id+"articleDataFR.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 

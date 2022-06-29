@@ -32,7 +32,7 @@ class _KglHomeENState extends State<KglHomeEN> {
   }
 
   _initData() async {
-    String fileName = "chaptersKglDataEN.json";
+    String fileName = widget.id+"chaptersKglDataEN.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 

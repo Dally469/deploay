@@ -33,7 +33,7 @@ class _HomeENState extends State<HomeEN> {
 
   _initData() async {
 
-    String fileName = "chaptersDataEN.json";
+    String fileName = widget.id+"chaptersDataEN.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 

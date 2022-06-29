@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:accordion/accordion.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -10,8 +9,6 @@ import 'package:ralga/models/chapter_model.dart';
 import 'package:ralga/pages/laws/laws-rw.dart';
 import 'package:ralga/utils/colors.dart';
 import 'package:ralga/widgets/app-icon.dart';
-import 'package:ralga/widgets/big-text.dart';
-import 'package:ralga/widgets/expandable-text.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HomeRW extends StatefulWidget {
@@ -33,7 +30,7 @@ class _HomeRWState extends State<HomeRW> {
 
   _initData() async {
 
-    String fileName = "chaptersDataRW.json";
+    String fileName =  widget.id+"chaptersDataRW.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 

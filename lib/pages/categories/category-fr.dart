@@ -168,7 +168,7 @@ class _CategoryFRState extends State<CategoryFR> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Orders("Coming soon...")),
+                                  builder: (context) => Orders("Bientôt disponible...")),
                             ):
                             Navigator.push(
                               context,

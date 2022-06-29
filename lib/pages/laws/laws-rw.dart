@@ -32,7 +32,7 @@ class _LawsRWState extends State<LawsRW> {
 
   _initData() async {
 
-    String fileName = "articleDataRW.json";
+    String fileName = widget.id+"articleDataRW.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 

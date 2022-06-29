@@ -33,7 +33,7 @@ class _KglHomeFRState extends State<KglHomeFR> {
   }
 
   _initData() async {
-    String fileName = "chaptersKglDataFR.json";
+    String fileName = widget.id+"chaptersKglDataFR.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 

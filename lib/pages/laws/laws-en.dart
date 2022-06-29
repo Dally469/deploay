@@ -34,7 +34,7 @@ class _LawsENState extends State<LawsEN> {
 
   _initData() async {
 
-    String fileName = "articleDataEN.json";
+    String fileName = widget.id+"articleDataEN.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 

@@ -35,7 +35,7 @@ class _KglHomeRWState extends State<KglHomeRW> {
   _initData() async {
 
 
-    String fileName = "chaptersKglDataRW.json";
+    String fileName = widget.id+"chaptersKglDataRW.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 

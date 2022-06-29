@@ -34,7 +34,7 @@ class _HomeFRState extends State<HomeFR> {
 
   _initData() async {
 
-    String fileName = "chaptersDataFR.json";
+    String fileName = widget.id+"chaptersDataFR.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 
