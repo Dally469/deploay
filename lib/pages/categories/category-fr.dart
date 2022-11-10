@@ -144,8 +144,7 @@ class _CategoryFRState extends State<CategoryFR> {
               categories.isEmpty
                   ? Container(
                 height: 400,
-                margin: EdgeInsets.only(
-                    bottom: 10, left: 8, right: 8, top: 10),
+                margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
                 child: Center(
                   child: SpinKitDoubleBounce(
                     color: appColor,
@@ -155,8 +154,7 @@ class _CategoryFRState extends State<CategoryFR> {
               )
                   : Container(
                 height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.only(
-                    bottom: 10, left: 8, right: 8, top: 10),
+                margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     physics: NeverScrollableScrollPhysics(),

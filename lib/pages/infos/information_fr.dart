@@ -7,6 +7,8 @@ import 'package:ralga/pages/infos/laws-category-fr.dart';
 import 'package:ralga/utils/colors.dart';
 import 'package:ralga/widgets/app-icon.dart';
 
+import '../user_manual/user_manual_fr.dart';
+
 class InformationFR extends StatefulWidget {
   const InformationFR({Key? key}) : super(key: key);
 
@@ -312,6 +314,98 @@ class _InformationFRState extends State<InformationFR> {
                                                       style: TextStyle(
                                                           fontSize: 14,
                                                           color: appDarkColor)),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 4,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const UserManualFR()
+                            ),
+                          );
+                        },
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.only(left: 10, right: 5, top: 10, bottom: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Color(0XFFe8e8e8),
+                                      offset: Offset(0, 5),
+                                      blurRadius: 5)
+                                ]),
+                            child: Container(
+                              padding: EdgeInsets.only(left: 0, right: 3, top: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 35,
+                                        width: 35,
+                                        margin: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(color: overlayWhiteColor, width: 3),
+                                        ),
+                                        child: Image.asset("assets/images/rwlogo.png"),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Container(
+                                          margin: EdgeInsets.only(left: 0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 220,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Text("MANUEL DE L'UTILISATEUR", style: TextStyle(color: appDarkColor, fontSize: 15, fontWeight: FontWeight.bold),),
+                                                    SizedBox(height: 4,),
+
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.arrow_forward, color: Colors.green,),
+                                                  SizedBox(width: 10,),
+                                                  Text("Click here",
+                                                      style: TextStyle(
+                                                          fontSize: 14, color:appDarkColor)),
                                                 ],
                                               ),
                                               SizedBox(

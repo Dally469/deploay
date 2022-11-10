@@ -1,14 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ralga/language.dart';
-import 'package:ralga/pages/categories/category-rw.dart';
-import 'package:ralga/pages/decentralization/decentralization-en.dart';
-import 'package:ralga/pages/home-rw.dart';
 import 'package:ralga/utils/colors.dart';
 
+
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -55,14 +56,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return  Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset("assets/images/logo.png", scale: 2,),
           SizedBox(height: 40,),
-          new Center(
+           Center(
             child: Container(
               margin: EdgeInsets.only(left: 50, right: 50),
               child: Align(
@@ -79,5 +80,14 @@ class _SplashScreenState extends State<SplashScreen> {
         ],
       ),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
