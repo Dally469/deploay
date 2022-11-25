@@ -35,17 +35,17 @@ class _LawsCategoryENState extends State<LawsCategoryEN> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 25),
+                      margin: const EdgeInsets.only(top: 25),
                       child: Row(
                         children: [
                           GestureDetector(
                             onTap: (() => Navigator.pop(context)),
-                            child: Icon(
+                            child: const Icon(
                               Icons.arrow_back_ios,
                               color: whiteColor,
                             ),
                           ),
-                          Container(
+                          const SizedBox(
                             width: 190,
                             child: Text("Laws",
                                 overflow: TextOverflow.visible,
@@ -58,9 +58,9 @@ class _LawsCategoryENState extends State<LawsCategoryEN> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 23),
+                      margin: const EdgeInsets.only(top: 23),
                       child: Row(
-                        children: [
+                        children: const [
                           AppIcon(icon: Icons.search),
                           AppIcon(icon: Icons.settings),
                         ],
@@ -85,12 +85,10 @@ class _LawsCategoryENState extends State<LawsCategoryEN> {
         body: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
-            
             children: [
-              
               Container(
                 height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
+                margin: const EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
                 child: Column(
                   children: [
                     InkWell(
