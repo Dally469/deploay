@@ -84,12 +84,7 @@ class _DecentralizationENState extends State<DecentralizationEN> {
                                 //Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryFR()),);
                               },
                               child: AppIcon(icon: Icons.share)),
-                          InkWell(
-                              onTap: () {
 
-                                Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryEN()),);
-                              },
-                              child: AppIcon(icon: Icons.arrow_forward)),
                         ],
                       ),
                     )

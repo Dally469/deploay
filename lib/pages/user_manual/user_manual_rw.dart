@@ -9,11 +9,11 @@ class UserManualRW extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     _appBar(height) => PreferredSize(
-      preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
+      preferredSize: Size(MediaQuery.of(context).size.width, height + 30),
       child: Stack(
         children: <Widget>[
           Container(
-            height: height + 70,
+            height: height + 20,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
                 color: Colors.white
@@ -37,12 +37,12 @@ class UserManualRW extends StatelessWidget {
                         ),
                         const SizedBox(
                           width: 200,
-                          child: Text("User Manual",
+                          child: Text("UKO IKORESHWA",
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.visible,
                               style: TextStyle(
                                   color: appColor,
-                                  fontSize: 17,
+                                  fontSize: 22,
                                   fontWeight: FontWeight.w600)),
                         ),
                       ],
@@ -76,107 +76,145 @@ class UserManualRW extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset("assets/images/phones_1.jpg",  scale: 2,),
+
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("This above image 1 with Shaded area they description are below",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("Step 1: Hitamo ururimi",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
-                      fontWeight: FontWeight.w400)),
+                      fontWeight: FontWeight.w700)),
                 ),
+                Image.asset("assets/images/one.jpg",  scale: 3,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("1: Use application in English language",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("1. English",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("2: Use application in Kinyarwanda language",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("2.	Kinyarwanda ",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("3: Use application in French language",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("3.	Francais ",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 SizedBox(height: 50,),
-                Image.asset("assets/images/phones_2.jpg",  scale: 2,),
+
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("This above image 2 with Shaded area they description are below",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("Step 2: Hitamo igice ushaka kureba ",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
+                      fontWeight: FontWeight.w700)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 7),
+                  child: Text("Kanda hano uhitemo igice wasoma kugaragara mu ifoto ikurikira",textAlign: TextAlign.center, style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 15,
                       fontWeight: FontWeight.w400)),
                 ),
+                Image.asset("assets/images/two.jpg",  scale: 3,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("1: Click to read Decentralization",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("1. Politiki Ubuyobozi Bwegereye abaturage",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("2: Click to read Law category and their information",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("2. Amategeko",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("3: Click to read user manual",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("3. Uko ikoreshwa",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 SizedBox(height: 50,),
-                Image.asset("assets/images/phones_3.jpg",  scale: 2,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("This above image 3 with Shaded area they description are below",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text(" Step 3: Guhitamo dokima",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
+                      fontWeight: FontWeight.w700)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 7),
+                  child: Text("Fungura dokima mu ishakiro ubashe kuyisoma",textAlign: TextAlign.center, style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 15,
                       fontWeight: FontWeight.w400)),
                 ),
+                Image.asset("assets/images/six.jpg",  scale: 3,),
+
 
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("Click to read view all articles belongs in Organic law governing elections",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("1. Hitamo dokima ugindeye ku mwaka",textAlign: TextAlign.center, style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("2. Sangiza angiza abantu dokima iri muri PDF ",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
 
                 SizedBox(height: 50,),
-                Image.asset("assets/images/phones_4.jpg",  scale: 2,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("This above image 4 with Shaded area they description are below",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("Step 4: Hitamo amakuru",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
-                      fontWeight: FontWeight.w400)),
+                      fontWeight: FontWeight.w700)),
                 ),
+                Image.asset("assets/images/three.jpg",  scale: 3,),
 
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Click on icon arrow down to read  selected article more information",textAlign: TextAlign.center, style: TextStyle(
+                  padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 7),
+                  child: Text("Ku mategeko kandi ku kamenyetso kareba hasi kugira ngo usome amategeko",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
-                SizedBox(height: 50,),
-                Image.asset("assets/images/phones_5.jpg",  scale: 2,),
+                SizedBox(height: 10,),
+                Image.asset("assets/images/four.jpg",  scale: 3,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("This above image 5 with Shaded area they description are below",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("Step 5: Reba amakuru",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
-                      fontWeight: FontWeight.w400)),
+                      fontWeight: FontWeight.w700)),
                 ),
 
+                SizedBox(height: 10,),
+                Image.asset("assets/images/five.jpg",  scale: 3,),
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Now you are reading information arrow down is clicked on  selected article more information",textAlign: TextAlign.center, style: TextStyle(
+                  padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 6),
+                  child: Text("Ubu noneho wabasha gusoma amategeko",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("Step 6: Gusubira ahabanza",textAlign: TextAlign.center, style: TextStyle(
+                      color: appColor,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700)),
+                ),const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("Step 7: Sangiza abandi dokima iri muri PDF ",textAlign: TextAlign.center, style: TextStyle(
+                      color: appColor,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700)),
                 ),
                 SizedBox(height: 70,),
               ],

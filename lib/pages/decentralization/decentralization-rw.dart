@@ -74,12 +74,7 @@ class _DecentralizationRWState extends State<DecentralizationRW> {
                                 //Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryFR()),);
                               },
                               child: AppIcon(icon: Icons.share)),
-                          InkWell(
-                              onTap: () {
 
-                                Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryRW()),);
-                              },
-                              child: AppIcon(icon: Icons.arrow_forward)),
                         ],
                       ),
                     )

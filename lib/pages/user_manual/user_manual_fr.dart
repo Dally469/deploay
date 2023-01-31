@@ -9,11 +9,11 @@ class UserManualFR extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     _appBar(height) => PreferredSize(
-      preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
+      preferredSize: Size(MediaQuery.of(context).size.width, height + 30),
       child: Stack(
         children: <Widget>[
           Container(
-            height: height + 70,
+            height: height + 20,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
                 color: Colors.white
@@ -42,7 +42,7 @@ class UserManualFR extends StatelessWidget {
                               overflow: TextOverflow.visible,
                               style: TextStyle(
                                   color: appColor,
-                                  fontSize: 17,
+                                  fontSize: 26,
                                   fontWeight: FontWeight.w600)),
                         ),
                       ],
@@ -76,107 +76,145 @@ class UserManualFR extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset("assets/images/phones_1.jpg",  scale: 2,),
+
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("Cette image ci-dessus 1 avec la zone ombrée, leur description est ci-dessous",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("Step 1: Choisir la langue ",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
-                      fontWeight: FontWeight.w400)),
+                      fontWeight: FontWeight.w700)),
                 ),
+                Image.asset("assets/images/one.jpg",  scale: 3,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("1: Utiliser l'application en langue anglaise",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("1. English",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("2: Utiliser l'application en langue kinyarwanda",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("2.  Kinya ",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("3: Utiliser l'application en langue française",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("3.  Francais ",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 SizedBox(height: 50,),
-                Image.asset("assets/images/phones_2.jpg",  scale: 2,),
+
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("Cette image ci-dessus 2 avec la zone ombrée, leur description est ci-dessous",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("Step 2: Choisir la rubrique",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
+                      fontWeight: FontWeight.w700)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 7),
+                  child: Text("Cliquez sur la section qui vous intéresse et indiquée dans l'image ci-dessous",textAlign: TextAlign.center, style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 15,
                       fontWeight: FontWeight.w400)),
                 ),
+                Image.asset("assets/images/two.jpg",  scale: 3,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("1: Cliquez pour lire Décentralisation",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("1. Décentralisation ",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("2: Cliquez pour lire la catégorie Loi et leurs informations",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("2. Catégorie Droit",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("3: Cliquez pour lire le manuel d'utilisation",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("3. Manuel de l'Utilisateur",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
                 SizedBox(height: 50,),
-                Image.asset("assets/images/phones_3.jpg",  scale: 2,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("Cette image ci-dessus 3 avec la zone ombrée, leur description est ci-dessous",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text(" Step 3: Choisir les documents",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
+                      fontWeight: FontWeight.w700)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 7),
+                  child: Text("Cliquez sur le document dans la table des matières pour accéder à l'intégralité de son contenu",textAlign: TextAlign.center, style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 15,
                       fontWeight: FontWeight.w400)),
                 ),
+                Image.asset("assets/images/six.jpg",  scale: 3,),
+
 
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("Cliquez pour lire voir tous les articles appartient à la loi organique régissant les élections",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("1. Sélectionner le document selon l'année",textAlign: TextAlign.center, style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w300)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("2. Partage des documents en PDF",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
 
                 SizedBox(height: 50,),
-                Image.asset("assets/images/phones_4.jpg",  scale: 2,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("Cette image ci-dessus 4 avec la zone ombrée, leur description est ci-dessous",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("Step 4: Choisir le contenu",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
-                      fontWeight: FontWeight.w400)),
+                      fontWeight: FontWeight.w700)),
                 ),
+                Image.asset("assets/images/three.jpg",  scale: 3,),
 
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Cliquez sur l'icône flèche vers le bas pour lire l'article sélectionné plus d'informations",textAlign: TextAlign.center, style: TextStyle(
+                  padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 7),
+                  child: Text("Pour les lois, cliquez sur la flèche pour afficher le contenu sous la rubrique sélectionnée",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
                 ),
-                SizedBox(height: 50,),
-                Image.asset("assets/images/phones_5.jpg",  scale: 2,),
+                SizedBox(height: 10,),
+                Image.asset("assets/images/four.jpg",  scale: 3,),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text("Cette image ci-dessus 5 avec la zone ombrée, leur description est ci-dessous",textAlign: TextAlign.center, style: TextStyle(
+                  child: Text("Step 5: Affichage du contenu",textAlign: TextAlign.center, style: TextStyle(
                       color: appColor,
                       fontSize: 17,
-                      fontWeight: FontWeight.w400)),
+                      fontWeight: FontWeight.w700)),
                 ),
 
+                SizedBox(height: 10,),
+                Image.asset("assets/images/five.jpg",  scale: 3,),
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Maintenant que vous lisez les informations, la flèche vers le bas est cliqué sur l'article sélectionné plus d'informations",textAlign: TextAlign.center, style: TextStyle(
+                  padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 6),
+                  child: Text("Vous pouvez maintenant lire les informations que vous recherchez",textAlign: TextAlign.center, style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w300)),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("Step 6: Aller aux pages précédentes",textAlign: TextAlign.center, style: TextStyle(
+                      color: appColor,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700)),
+                ),const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("Step 7: Partage des documents en PDF",textAlign: TextAlign.center, style: TextStyle(
+                      color: appColor,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700)),
                 ),
                 SizedBox(height: 70,),
               ],
@@ -184,6 +222,5 @@ class UserManualFR extends StatelessWidget {
           ),
         ));
   }
-
-
 }
+

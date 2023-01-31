@@ -400,7 +400,7 @@ class _InformationRWState extends State<InformationRW> {
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      "UKO IKORERW",
+                                                      "UKO IKORESHWA",
                                                       style: TextStyle(
                                                           color: appDarkColor,
                                                           fontSize: 15,
