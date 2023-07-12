@@ -10,7 +10,7 @@ class Article {
   Article.fromJson(Map json)
       : id = json['id'],
         title = json['title'],
-        law = json['law'];
+        law = json['law'] ?? "";
   Map toJson() {
     return {'id': id, 'title': title, 'law': law};
   }

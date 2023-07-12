@@ -69,7 +69,6 @@ class _LawsENState extends State<LawsEN> {
     }
   }
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
@@ -133,7 +132,6 @@ class _LawsENState extends State<LawsEN> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
         appBar: _appBar(AppBar().preferredSize.height),
         backgroundColor: whiteColor,
         body: SingleChildScrollView(
@@ -152,17 +150,8 @@ class _LawsENState extends State<LawsEN> {
                         ),
                       ),
                     )
-                  : Container(
-                      height: MediaQuery.of(context).size.height,
-                      margin: EdgeInsets.only(
-                          bottom: 10, left: 8, right: 8, top: 10),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          physics: AlwaysScrollableScrollPhysics(),
-                          itemCount: laws.length,
-                          itemBuilder: (context, position) {
-                            return _buildLawsItem(position);
-                          }),
+                  : Column(
+                      children: List.generate(laws.length, (index) =>  _buildLawsItem(index))
                     ),
             ],
           ),

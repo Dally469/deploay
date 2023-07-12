@@ -154,34 +154,21 @@ class _CategoryRWState extends State<CategoryRW> {
                         ),
                       ),
                     )
-                  : Container(
-                    height: MediaQuery.of(context).size.height,
-                    margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: categories.length,
-                          itemBuilder: (context, position) {
-                            return GestureDetector(
-                                onTap: (() {
-                                  categories[position].id.toString() == "4" ?
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Orders("Birimuzira..")),
-                                  ):
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeRW(
-                                              categories[position].id,
-                                              categories[position].title,
-                                            )),
-                                  );
-                                }),
-                                child: _buildCategoryItem(position));
-                          }),
-                    ),
+                  : Column(
+                  children: List.generate(categories.length, (position) {
+                    return GestureDetector(
+                        onTap: (() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeRW(
+                                  categories[position].id,
+                                  categories[position].title,
+                                )),
+                          );
+                        }),
+                        child: _buildCategoryItem(position));
+                  })),
             ],
           ),
         ));

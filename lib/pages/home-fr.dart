@@ -153,30 +153,23 @@ class _HomeFRState extends State<HomeFR> {
                   ),
                 ),
               )
-                  : Container(
-                height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.only(
-                    bottom: 10, left: 8, right: 8, top: 10),
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    itemCount: chapters.length,
-                    itemBuilder: (context, position) {
-                      return GestureDetector(
-                          onTap: () {
-                            widget.id.toString() == "3" || widget.id.toString() == "2" ?
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LawsFR(
-                                    chapters[position].id,
-                                    chapters[position].text,
-                                  )),
-                            ):'';
-                          },
-                          child: _buildShopItem(position));
-                    }),
-              ),
+                  : Column(
+                  children: List.generate(chapters.length, (position) {
+                    return GestureDetector(
+                        onTap: () {
+                          widget.id.toString() != "1"
+                              ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LawsFR(
+                                  chapters[position].id,
+                                  chapters[position].text,
+                                )),
+                          )
+                              : '';
+                        },
+                        child: _buildShopItem(position));
+                  })),
             ],
           ),
         ));
@@ -211,7 +204,7 @@ class _HomeFRState extends State<HomeFR> {
                       Container(
                         height: 35,
                         width: 35,
-                        margin: EdgeInsets.all(3),
+                        margin: const EdgeInsets.all(3),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border:
@@ -219,32 +212,31 @@ class _HomeFRState extends State<HomeFR> {
                         ),
                         child: Image.asset("assets/images/rwlogo.png"),
                       ),
-                      widget.id.toString() == "3" || widget.id.toString() == "2"
+                      widget.id.toString() != "1"
                           ? Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Container(
-                          margin: EdgeInsets.only(left: 3),
+                          margin: const EdgeInsets.only(left: 3),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 220,
                                 child: Text(
                                   chapters[index].text,
-                                  style: TextStyle(color: appDarkColor),
+                                  style: const TextStyle(color: appDarkColor),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                               Text(
-                                  "Articles : " +
-                                      chapters[index].articles_count,
-                                  style: TextStyle(
+                                  "Articles : ${chapters[index].articles_count}",
+                                  style: const TextStyle(
                                       fontSize: 15,
                                       color: Colors.black45)),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                             ],
@@ -254,12 +246,12 @@ class _HomeFRState extends State<HomeFR> {
                           : Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Container(
-                          margin: EdgeInsets.only(left: 0),
+                          margin: const EdgeInsets.only(left: 0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 220,
                                 child: ExpandablePanel(
                                   header: Padding(
@@ -267,12 +259,12 @@ class _HomeFRState extends State<HomeFR> {
                                     const EdgeInsets.only(top: 5),
                                     child: Text(
                                       chapters[index].text,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           color: appDarkColor),
                                     ),
                                   ),
-                                  collapsed: Text(
+                                  collapsed: const Text(
                                     ' ',
                                     softWrap: true,
                                     textAlign: TextAlign.justify,
@@ -288,7 +280,7 @@ class _HomeFRState extends State<HomeFR> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                             ],
@@ -297,7 +289,7 @@ class _HomeFRState extends State<HomeFR> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                 ],

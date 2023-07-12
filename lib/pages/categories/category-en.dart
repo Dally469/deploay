@@ -47,7 +47,6 @@ class _CategoryENState extends State<CategoryEN> {
         categories = list1.map((model) => Category.fromJson(model)).toList();
 
         print(list1);
-
       });
       //return Category.fromJson(json.decode(jsonData));
     } else {
@@ -70,6 +69,7 @@ class _CategoryENState extends State<CategoryEN> {
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   _appBar(height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
         child: Stack(
@@ -138,7 +138,7 @@ class _CategoryENState extends State<CategoryEN> {
         appBar: _appBar(AppBar().preferredSize.height),
         backgroundColor: whiteColor,
         body: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               categories.isEmpty
@@ -153,35 +153,21 @@ class _CategoryENState extends State<CategoryEN> {
                         ),
                       ),
                     )
-                  : Container(
-                      height: MediaQuery.of(context).size.height,
-                      margin: EdgeInsets.only(
-                          bottom: 10, left: 8, right: 8, top: 10),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: categories.length,
-                          itemBuilder: (context, position) {
-                            return GestureDetector(
-                                onTap: (() {
-                                  categories[position].id.toString() == "4" ?
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Orders("Coming soon...")),
-                                  ):
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeEN(
-                                              categories[position].id,
-                                              categories[position].title,
-                                            )),
-                                  );
-                                }),
-                                child: _buildCategoryItem(position));
+                  : Column(
+                      children: List.generate(categories.length, (position) {
+                      return GestureDetector(
+                          onTap: (() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeEN(
+                                        categories[position].id,
+                                        categories[position].title,
+                                      )),
+                            );
                           }),
-                    ),
+                          child: _buildCategoryItem(position));
+                    }))
             ],
           ),
         ));
@@ -256,7 +242,6 @@ class _CategoryENState extends State<CategoryEN> {
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
-
                                   ],
                                 ),
                               ),

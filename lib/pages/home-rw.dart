@@ -144,27 +144,23 @@ class _HomeRWState extends State<HomeRW> {
                   child: SpinKitDoubleBounce(color: appColor,size: 70,),
                 ), 
               ):
-              Container(
-                height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: chapters.length,
-                    itemBuilder: (context, position) {
-                      return GestureDetector(
+              Column(
+                  children: List.generate(chapters.length, (position) {
+                    return GestureDetector(
                         onTap: () {
-                          widget.id.toString() == "3" || widget.id.toString() == "2"  ?
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => LawsRW(
-                                chapters[position].id,
-                                chapters[position].text,
-                              )),
-                            ):'';
-                        }, child: _buildShopItem(position)
-                        );
-                    }),
-              ),
+                          widget.id.toString() != "1"
+                              ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LawsRW(
+                                  chapters[position].id,
+                                  chapters[position].text,
+                                )),
+                          )
+                              : '';
+                        },
+                        child: _buildShopItem(position));
+                  })),
             ],
           ),
         ));
@@ -207,31 +203,30 @@ class _HomeRWState extends State<HomeRW> {
                         ),
                         child: Image.asset("assets/images/rwlogo.png"),
                       ),
-                      widget.id.toString() == "3" || widget.id.toString() == "2" ?
+                      widget.id.toString() != "1" ?
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Container(
-                          margin: EdgeInsets.only(left: 3),
+                          margin: const EdgeInsets.only(left: 3),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                             Container(
+                             SizedBox(
                                 width: 220,
                                 
-                                child: Text(chapters[index].text, style: TextStyle(color: appDarkColor),),
+                                child: Text(chapters[index].text, style: const TextStyle(color: appDarkColor),),
                               ),
                             
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                                
                               Text(
-                                  "Ingingo : " +
-                                      chapters[index].articles_count,
-                                  style: TextStyle(
+                                  "Ingingo : ${chapters[index].articles_count}",
+                                  style: const TextStyle(
                                       fontSize: 15, color: Colors.black45)),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                             ],
@@ -241,7 +236,7 @@ class _HomeRWState extends State<HomeRW> {
                        Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Container(
-                          margin: EdgeInsets.only(left: 0),
+                          margin: const EdgeInsets.only(left: 0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -251,7 +246,7 @@ class _HomeRWState extends State<HomeRW> {
                                 child: ExpandablePanel(
                                   header: Padding(
                                     padding: const EdgeInsets.only(top: 5),
-                                    child: Text(chapters[index].text, style: TextStyle(fontSize: 14, color: appDarkColor),),
+                                    child: Text(chapters[index].text, style: const TextStyle(fontSize: 14, color: appDarkColor),),
                                   ),
                                   collapsed: Text(' ', softWrap: true, textAlign: TextAlign.justify, overflow: TextOverflow.ellipsis,),
                                   expanded: Padding(

@@ -1,20 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:accordion/accordion.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ralga/api/http_request.dart';
 import 'package:ralga/models/category_model.dart';
-import 'package:ralga/models/chapter_model.dart';
 import 'package:ralga/pages/home-fr.dart';
-import 'package:ralga/pages/home-rw.dart';
-import 'package:ralga/pages/orders.dart';
 import 'package:ralga/utils/colors.dart';
 import 'package:ralga/widgets/app-icon.dart';
-import 'package:ralga/widgets/big-text.dart';
-import 'package:ralga/widgets/expandable-text.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CategoryFR extends StatefulWidget {
@@ -152,34 +145,21 @@ class _CategoryFRState extends State<CategoryFR> {
                   ),
                 ),
               )
-                  : Container(
-                height: MediaQuery.of(context).size.height,
-                margin: EdgeInsets.only(bottom: 10, left: 8, right: 8, top: 10),
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: categories.length,
-                    itemBuilder: (context, position) {
-                      return GestureDetector(
-                          onTap: (() {
-                            categories[position].id.toString() == "4" ?
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Orders("Bientôt disponible...")),
-                            ):
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeFR(
-                                    categories[position].id,
-                                    categories[position].title,
-                                  )),
-                            );
-                          }),
-                          child: _buildCategoryItem(position));
-                    }),
-              ),
+                  : Column(
+                  children: List.generate(categories.length, (position) {
+                    return GestureDetector(
+                        onTap: (() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeFR(
+                                  categories[position].id,
+                                  categories[position].title,
+                                )),
+                          );
+                        }),
+                        child: _buildCategoryItem(position));
+                  })),
             ],
           ),
         ));

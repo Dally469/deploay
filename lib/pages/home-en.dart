@@ -32,8 +32,7 @@ class _HomeENState extends State<HomeEN> {
   }
 
   _initData() async {
-
-    String fileName = widget.id+"chaptersDataEN.json";
+    String fileName = widget.id + "chaptersDataEN.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 
@@ -46,7 +45,6 @@ class _HomeENState extends State<HomeEN> {
         chapters = list1.map((model) => Chapters.fromJson(model)).toList();
 
         print(list1);
-
       });
       //return Category.fromJson(json.decode(jsonData));
     } else {
@@ -63,7 +61,6 @@ class _HomeENState extends State<HomeEN> {
           print(list);
         });
       });
-
     }
   }
 
@@ -151,30 +148,23 @@ class _HomeENState extends State<HomeEN> {
                         ),
                       ),
                     )
-                  : Container(
-                      height: MediaQuery.of(context).size.height,
-                      margin: EdgeInsets.only(
-                          bottom: 10, left: 8, right: 8, top: 10),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          physics: AlwaysScrollableScrollPhysics(),
-                          itemCount: chapters.length,
-                          itemBuilder: (context, position) {
-                            return GestureDetector(
-                                onTap: () {
-                                  widget.id.toString() == "3" || widget.id.toString() == "2" ?
-                                  Navigator.push(
+                  : Column(
+                      children: List.generate(chapters.length, (position) {
+                      return GestureDetector(
+                          onTap: () {
+                            widget.id.toString() != "1"
+                                ? Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => LawsEN(
                                               chapters[position].id,
                                               chapters[position].text,
                                             )),
-                                  ):'';
-                                },
-                                child: _buildShopItem(position));
-                          }),
-                    ),
+                                  )
+                                : '';
+                          },
+                          child: _buildShopItem(position));
+                    })),
             ],
           ),
         ));
@@ -217,7 +207,7 @@ class _HomeENState extends State<HomeEN> {
                         ),
                         child: Image.asset("assets/images/rwlogo.png"),
                       ),
-                      widget.id.toString() == "3" || widget.id.toString() == "2"
+                      widget.id.toString() != "1"
                           ? Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Container(
@@ -271,7 +261,7 @@ class _HomeENState extends State<HomeEN> {
                                           ),
                                         ),
                                         collapsed: Text(
-                                          '',
+                                          chapters[index].details.toString(),
                                           softWrap: true,
                                           textAlign: TextAlign.justify,
                                           overflow: TextOverflow.ellipsis,
@@ -280,7 +270,9 @@ class _HomeENState extends State<HomeEN> {
                                           padding:
                                               const EdgeInsets.only(top: 5),
                                           child: Text(
-                                              chapters[index].details.toString(),
+                                              chapters[index]
+                                                  .details
+                                                  .toString(),
                                               softWrap: true,
                                               textAlign: TextAlign.justify),
                                         ),

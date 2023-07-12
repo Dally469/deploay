@@ -152,17 +152,9 @@ class _LawsFRState extends State<LawsFR> {
                         ),
                       ),
                     )
-                  : Container(
-                      height: MediaQuery.of(context).size.height,
-                      margin: EdgeInsets.only(
-                          bottom: 10, left: 8, right: 8, top: 10),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: laws.length,
-                          itemBuilder: (context, position) {
-                            return _buildLawsItem(position);
-                          }),
-                    ),
+                  : Column(
+                  children: List.generate(laws.length, (index) =>  _buildLawsItem(index))
+              )
             ],
           ),
         ));
