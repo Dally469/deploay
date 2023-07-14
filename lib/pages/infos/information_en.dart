@@ -206,7 +206,7 @@ class _InformationENState extends State<InformationEN> {
                         alignment: Alignment.topCenter,
                         child: Container(
                           width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.only(left: 10, right: 5, top: 10, bottom: 10),
+                          margin: const EdgeInsets.only(left: 10, right: 5, top: 10, bottom: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
