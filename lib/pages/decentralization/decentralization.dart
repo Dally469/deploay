@@ -71,7 +71,7 @@ class _DecentralizationState extends State<Decentralization> {
                     children: [
                       InkWell(
                           onTap: () {
-                            Share.share('https://rwtest.yesconnect.rw/assets/pdf/english_decentralization_2012');
+                            Share.share('https://ralgaapi.awm-global.org/public/assets/pdf/english_decentralization_2012');
                             //onButtonTap(Share.whatsapp);
                             //Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryFR()),);
                           },
@@ -224,7 +224,7 @@ class _DecentralizationState extends State<Decentralization> {
             color: appColor,
             margin: EdgeInsets.all(3),
             child: SfPdfViewer.network(
-                'https://rwtest.yesconnect.rw/assets/pdf/english_decentralization_2012.pdf'))
+                'https://ralgaapi.awm-global.org/public/assets/pdf/english_decentralization_2012.pdf'))
             );
   }
 

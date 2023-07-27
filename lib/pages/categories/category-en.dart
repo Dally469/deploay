@@ -237,7 +237,7 @@ class _CategoryENState extends State<CategoryEN> {
                                     ),
                                     Text(
                                       categories[index].law_no,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: blackColor,
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold),
@@ -245,18 +245,16 @@ class _CategoryENState extends State<CategoryEN> {
                                   ],
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                               Text(
                                   categories[index].id == "1"
-                                      ? "Articles : " +
-                                          categories[index].chapters_count
-                                      : "Chapters : " +
-                                          categories[index].chapters_count,
-                                  style: TextStyle(
+                                      ? "Articles : ${categories[index].chapters_count}"
+                                      : "Chapters : ${categories[index].chapters_count}",
+                                  style: const TextStyle(
                                       fontSize: 14, color: appDarkColor)),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                             ],

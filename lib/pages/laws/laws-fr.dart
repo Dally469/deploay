@@ -207,7 +207,7 @@ class _LawsFRState extends State<LawsFR> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 250,
+                                width: MediaQuery.of(context).size.width - 80,
                                 child: ExpandablePanel(
                                   header: Padding(
                                     padding: const EdgeInsets.only(top: 5),

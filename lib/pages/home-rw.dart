@@ -242,7 +242,7 @@ class _HomeRWState extends State<HomeRW> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 220,
+                                width: MediaQuery.of(context).size.width - 80,
                                 child: ExpandablePanel(
                                   header: Padding(
                                     padding: const EdgeInsets.only(top: 5),

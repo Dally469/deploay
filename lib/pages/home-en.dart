@@ -248,7 +248,7 @@ class _HomeENState extends State<HomeEN> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: 220,
+                                      width: MediaQuery.of(context).size.width - 80,
                                       child: ExpandablePanel(
                                         header: Padding(
                                           padding:
@@ -261,7 +261,7 @@ class _HomeENState extends State<HomeEN> {
                                           ),
                                         ),
                                         collapsed: Text(
-                                          chapters[index].details.toString(),
+                                          " ",
                                           softWrap: true,
                                           textAlign: TextAlign.justify,
                                           overflow: TextOverflow.ellipsis,

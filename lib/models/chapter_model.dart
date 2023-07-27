@@ -11,13 +11,13 @@ class Chapters {
   Chapters.fromJson(Map json)
         :id=json['id'],
         text=json['text'],
-        details=json['details'] ?? '',
+        details=json['description'] ?? '',
         articles_count=json['articles_count'];
   Map toJson(){
     return{
     'id':id,
     'text':text,
-    'details':details,
+    'description':details,
     'articles_count':articles_count,
     };
   }

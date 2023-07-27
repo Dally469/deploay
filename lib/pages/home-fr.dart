@@ -252,7 +252,7 @@ class _HomeFRState extends State<HomeFR> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
-                                width: 220,
+                                width: MediaQuery.of(context).size.width - 80,
                                 child: ExpandablePanel(
                                   header: Padding(
                                     padding:

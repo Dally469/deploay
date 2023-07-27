@@ -69,7 +69,7 @@ class _DecentralizationRWState extends State<DecentralizationRW> {
                         children: [
                           InkWell(
                               onTap: () {
-                                Share.share('https://rwtest.yesconnect.rw/assets/pdf/kinyarwanda_decentralization_2012.pdf');
+                                Share.share('https://ralgaapi.awm-global.org/public/assets/pdf/kinyarwanda_decentralization_2012.pdf');
                                 //onButtonTap(Share.whatsapp);
                                 //Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryFR()),);
                               },
@@ -182,11 +182,11 @@ class _DecentralizationRWState extends State<DecentralizationRW> {
               color: appColor,
               margin: EdgeInsets.all(3),
               child: SfPdfViewer.network(
-                    'https://rwtest.yesconnect.rw/assets/pdf/kinyarwanda_decentralization_2012.pdf'))
+                    'https://ralgaapi.awm-global.org/public/assets/pdf/kinyarwanda_decentralization_2012.pdf'))
             : Container(
               color: orangeColor,
               margin: EdgeInsets.all(3),
-              child: SfPdfViewer.network('https://rwtest.yesconnect.rw/assets/pdf/kinyarwanda_decentralization_2012.pdf')
+              child: SfPdfViewer.network('https://ralgaapi.awm-global.org/public/assets/pdf/kinyarwanda_decentralization_2012.pdf')
         ));
   }
 }

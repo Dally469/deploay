@@ -71,7 +71,7 @@ class _DecentralizationENState extends State<DecentralizationEN> {
                           isNew == true ?
                           InkWell(
                               onTap: () {
-                                Share.share('https://rwtest.yesconnect.rw/assets/pdf/english_decentralization_2021.pdf');
+                                Share.share('https://ralgaapi.awm-global.org/public/assets/pdf/english_decentralization_2021.pdf');
                                 //onButtonTap(Share.whatsapp);
                                 //Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryFR()),);
                               },
@@ -79,7 +79,7 @@ class _DecentralizationENState extends State<DecentralizationEN> {
                           :
                           InkWell(
                               onTap: () {
-                                Share.share('https://rwtest.yesconnect.rw/assets/pdf/english_decentralization_2001.pdf');
+                                Share.share('https://ralgaapi.awm-global.org/public/assets/pdf/english_decentralization_2001.pdf');
                                 //onButtonTap(Share.whatsapp);
                                 //Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryFR()),);
                               },
@@ -229,12 +229,12 @@ class _DecentralizationENState extends State<DecentralizationEN> {
               color: appColor,
               margin: EdgeInsets.all(3),
               //child: PdfViewer.openAsset('assets/pdf/homea.pdf')
-              child: SfPdfViewer.network( 'https://rwtest.yesconnect.rw/assets/pdf/english_decentralization_2021.pdf')
+              child: SfPdfViewer.network( 'https://ralgaapi.awm-global.org/public/assets/pdf/english_decentralization_2021.pdf')
       )
             : Container(
               color: orangeColor,
               margin: EdgeInsets.all(3),
-              child: SfPdfViewer.network( 'https://rwtest.yesconnect.rw/assets/pdf/english_decentralization_2001.pdf')
+              child: SfPdfViewer.network( 'https://ralgaapi.awm-global.org/public/assets/pdf/english_decentralization_2001.pdf')
               //child: PdfView(path: pdfFlePath!)
       ));
   }
