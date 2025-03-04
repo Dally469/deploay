@@ -2,12 +2,8 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 class HttpRequest {
-  final String _url = 'https://ralgaapi.awm-global.org/public/';
+  final String _url = 'http://85.239.242.194:8585/';
   final String _imageUrl = 'https://ralgaapi.awm-global.org/assets/pdf/';
-   //final String _url = 'http://192.168.8.105/YesConnectAPI/public/';
-  // final String _imageUrl = 'http://192.168.8.105/YesConnectAPI/public/assets/images/';
-  //  final String _url = 'http://localhost:8084/';
-  //  final String _imageUrl = 'http://localhost:8084/assets/images/';
 
   getImage(){
     return _imageUrl;

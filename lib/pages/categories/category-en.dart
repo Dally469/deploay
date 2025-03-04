@@ -1,20 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:accordion/accordion.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ralga/api/http_request.dart';
-import 'package:ralga/models/category_model.dart';
-import 'package:ralga/models/chapter_model.dart';
+import 'package:ralga/models/category_model.dart'; // Make sure path is correct
 import 'package:ralga/pages/home-en.dart';
-import 'package:ralga/pages/home-rw.dart';
-import 'package:ralga/pages/orders.dart';
 import 'package:ralga/utils/colors.dart';
 import 'package:ralga/widgets/app-icon.dart';
-import 'package:ralga/widgets/big-text.dart';
-import 'package:ralga/widgets/expandable-text.dart';
+
 import 'package:path_provider/path_provider.dart';
 
 class CategoryEN extends StatefulWidget {
@@ -25,7 +19,7 @@ class CategoryEN extends StatefulWidget {
 }
 
 class _CategoryENState extends State<CategoryEN> {
-  var categories = <Category>[];
+  List<Category> categories = []; // Initialize as an empty list
 
   @override
   void initState() {
@@ -33,245 +27,198 @@ class _CategoryENState extends State<CategoryEN> {
     _initData();
   }
 
-  _initData() async {
+  Future<void> _initData() async {
     String fileName = "categoryDataEN.json";
-    var dir = await getTemporaryDirectory();
-    File file = new File(dir.path + "/" + fileName);
+    Directory dir = await getTemporaryDirectory();
+    File file = File("${dir.path}/$fileName"); // Use string interpolation
 
-    if (file.existsSync()) {
-      print("Loading from CACHE");
-
-      var jsonData = file.readAsStringSync();
-      setState(() {
-        Iterable list1 = json.decode(jsonData);
-        categories = list1.map((model) => Category.fromJson(model)).toList();
-
-        print(list1);
-      });
-      //return Category.fromJson(json.decode(jsonData));
-    } else {
-      print("Loading from API");
-
-      await HttpRequest()
-          .getPublicData("retrieveCategoriesEN")
-          .then((response) {
+    try {
+      if (file.existsSync()) {
+        print("Loading from CACHE");
+        String jsonData = file.readAsStringSync();
+        List<dynamic> list1 = json.decode(jsonData);
         setState(() {
-          Iterable list = json.decode(response.body);
-          categories = list.map((model) => Category.fromJson(model)).toList();
-
-          print(list);
-          //save json in local file
-          file.writeAsStringSync(response.body,
-              flush: true, mode: FileMode.write);
+          categories = list1.map((model) => Category.fromJson(model)).toList();
         });
-      });
+      } else {
+        print("Loading from API");
+        final response = await HttpRequest().getPublicData("categories/in/en");
+
+        if (response.statusCode == 200) {
+          List<dynamic> list = json.decode(response.body);
+          setState(() {
+            categories = list.map((model) => Category.fromJson(model)).toList();
+          });
+          await file.writeAsString(response.body,
+              flush: true, mode: FileMode.write);
+        } else {
+          print('Request failed with status: ${response.statusCode}.');
+          // Handle the error appropriately (e.g., show an error message)
+        }
+      }
+    } catch (e) {
+      print("Error loading data: $e");
+      // Handle the error appropriately (e.g., show an error message)
     }
   }
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  _appBar(height) => PreferredSize(
+  PreferredSizeWidget _appBar(double height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: height + 70,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  appDarkColor,
-                  appDarkColor,
-                ]),
-              ), // Background
-              child: Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, top: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 25),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: (() => Navigator.pop(context)),
-                            child: Icon(
-                              Icons.arrow_back_ios,
-                              color: whiteColor,
-                            ),
-                          ),
-                          Container(
-                            width: 140,
-                            child: Text("Laws",
-                                overflow: TextOverflow.visible,
-                                style: TextStyle(
-                                    color: whiteColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600)),
-                          ),
-                        ],
+        child: Container(
+          height: height + 70,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              appDarkColor,
+              appDarkColor,
+            ]),
+          ), // Background
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 25),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          color: whiteColor,
+                        ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 23),
-                      child: Row(
-                        children: [
-                          AppIcon(icon: Icons.search),
-                          AppIcon(icon: Icons.settings),
-                        ],
+                      SizedBox(
+                        width: 140,
+                        child: const Text("Laws",
+                            overflow: TextOverflow.visible,
+                            style: TextStyle(
+                                color: whiteColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600)),
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+                Container(
+                  margin: const EdgeInsets.only(top: 23),
+                  child: Row(
+                    children: [
+                      AppIcon(icon: Icons.search),
+                      AppIcon(icon: Icons.settings),
+                    ],
+                  ),
+                )
+              ],
             ),
-
-            Container(), // Required some widget in between to float AppBar
-          ],
+          ),
         ),
       );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        appBar: _appBar(AppBar().preferredSize.height),
-        backgroundColor: whiteColor,
-        body: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              categories.isEmpty
-                  ? Container(
-                      height: 400,
-                      margin: EdgeInsets.only(
-                          bottom: 10, left: 8, right: 8, top: 10),
-                      child: Center(
-                        child: SpinKitDoubleBounce(
-                          color: appColor,
-                          size: 70,
+      appBar: _appBar(AppBar().preferredSize.height),
+      backgroundColor: whiteColor,
+      body: categories.isEmpty
+          ? Center(
+              child: SizedBox(
+                height: 400,
+                child: Center(
+                  child: SpinKitDoubleBounce(
+                    color: appColor,
+                    size: 70,
+                  ),
+                ),
+              ),
+            )
+          : ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: categories.length,
+              itemBuilder: (context, position) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeEN(
+                          categories[position].id.toString(),
+                          categories[position].title.toString(),
                         ),
                       ),
-                    )
-                  : Column(
-                      children: List.generate(categories.length, (position) {
-                      return GestureDetector(
-                          onTap: (() {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeEN(
-                                        categories[position].id,
-                                        categories[position].title,
-                                      )),
-                            );
-                          }),
-                          child: _buildCategoryItem(position));
-                    }))
-            ],
-          ),
-        ));
+                    );
+                  },
+                  child: _buildCategoryItem(position),
+                );
+              },
+            ),
+    );
   }
 
   Widget _buildCategoryItem(int index) {
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.only(left: 10, right: 5, top: 10, bottom: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Color(0XFFe8e8e8),
-                      offset: Offset(0, 5),
-                      blurRadius: 5)
-                ]),
-            child: Container(
-              padding: EdgeInsets.only(left: 0, right: 3, top: 5),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0XFFe8e8e8),
+            offset: const Offset(0, 5),
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Container(
+              height: 35,
+              width: 35,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: overlayWhiteColor, width: 3),
+              ),
+              child: Image.asset("assets/images/rwlogo.png"),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 35,
-                        width: 35,
-                        margin: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border:
-                              Border.all(color: overlayWhiteColor, width: 3),
-                        ),
-                        child: Image.asset("assets/images/rwlogo.png"),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Container(
-                          margin: EdgeInsets.only(left: 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 230,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      categories[index].title,
-                                      style: TextStyle(
-                                          color: appDarkColor,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      categories[index].law_no,
-                                      style: const TextStyle(
-                                          color: blackColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                  categories[index].id == "1"
-                                      ? "Articles : ${categories[index].chapters_count}"
-                                      : "Chapters : ${categories[index].chapters_count}",
-                                  style: const TextStyle(
-                                      fontSize: 14, color: appDarkColor)),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    categories[index].title ?? '',
+                    style: TextStyle(
+                      color: appDarkColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  SizedBox(
-                    height: 5,
+                  const SizedBox(height: 4),
+                  Text(
+                    categories[index].lawNo ?? '', // Correct field access
+                    style: const TextStyle(
+                      color: blackColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                  const SizedBox(height: 4),
+                  Text(
+                      categories[index].id == "1"
+                          ? "Articles : ${categories[index].chaptersCount ?? 0}"
+                          : "Chapters : ${categories[index].chaptersCount ?? 0}",
+                      style:
+                          const TextStyle(fontSize: 14, color: appDarkColor)),
                 ],
               ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

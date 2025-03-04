@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import "package:flutter/material.dart";
-import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:http/http.dart' as http;
 import 'package:ralga/pages/infos/laws-category-en.dart';
 import 'package:ralga/pages/infos/laws-category-fr.dart';
@@ -92,32 +91,32 @@ class _DecentralizationFRState extends State<DecentralizationFR> {
             Container(
               height: height + 145,
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: [
                   appDarkColor,
                   appDarkColor,
                 ]),
               ), // Background
               child: Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, top: 25),
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 25),
+                      margin: const EdgeInsets.only(top: 25),
                       child: Row(
                         children: [
                           GestureDetector(
                             onTap: (() => Navigator.pop(context)),
-                            child: Icon(
+                            child: const Icon(
                               Icons.arrow_back_ios,
                               color: whiteColor,
                             ),
                           ),
                           Container(
                             width: 200,
-                            child: Text("Decentralization",
+                            child: const Text("Decentralization",
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
                                     color: whiteColor,
@@ -128,7 +127,7 @@ class _DecentralizationFRState extends State<DecentralizationFR> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: const EdgeInsets.only(top: 20),
                       child: Row(
                         children: [
                           InkWell(
@@ -137,7 +136,7 @@ class _DecentralizationFRState extends State<DecentralizationFR> {
                                 //onButtonTap(Share.whatsapp);
                                 //Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryFR()),);
                               },
-                              child: AppIcon(icon: Icons.share)),
+                              child: const AppIcon(icon: Icons.share)),
 
                         ],
                       ),
@@ -163,24 +162,24 @@ class _DecentralizationFRState extends State<DecentralizationFR> {
                       height: 60,
                       width: 160,
                       color: whiteColor,
-                      margin: EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 4,
                           ),
                           isNew == false
-                              ? Icon(
+                              ? const Icon(
                                   Icons.check_circle,
                                   size: 30,
                                   color: appColor,
                                 )
-                              : Icon(
+                              : const Icon(
                                   Icons.check_circle,
                                   color: whiteColor,
                                 ),
-                          Column(
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -196,7 +195,7 @@ class _DecentralizationFRState extends State<DecentralizationFR> {
                                       fontSize: 25)),
                             ],
                           ),
-                          Icon(
+                          const Icon(
                             Icons.check_circle,
                             color: whiteColor,
                           )
@@ -214,24 +213,24 @@ class _DecentralizationFRState extends State<DecentralizationFR> {
                       height: 50,
                       width: 160,
                       color: whiteColor,
-                      margin: EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 4,
                           ),
                           isNew == true
-                              ? Icon(
+                              ? const Icon(
                                   Icons.check_circle,
                                   size: 30,
                                   color: appColor,
                                 )
-                              : Icon(
+                              : const Icon(
                                   Icons.check_circle,
                                   color: whiteColor,
                                 ),
-                          Column(
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -247,7 +246,7 @@ class _DecentralizationFRState extends State<DecentralizationFR> {
                                       fontSize: 25)),
                             ],
                           ),
-                          Icon(
+                          const Icon(
                             Icons.check_circle,
                             color: whiteColor,
                           )
@@ -273,12 +272,12 @@ class _DecentralizationFRState extends State<DecentralizationFR> {
         body: isNew == true
             ? Container(
                 color: appColor,
-                margin: EdgeInsets.all(3),
+                margin: const EdgeInsets.all(3),
                 // child: SfPdfViewer.network('https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')
             )
             : Container(
                 color: orangeColor,
-                margin: EdgeInsets.all(3),
+                margin: const EdgeInsets.all(3),
                 // child: SfPdfViewer.network('https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')
     ));
   }

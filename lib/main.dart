@@ -62,19 +62,19 @@ class _SplashScreenState extends State<SplashScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset("assets/images/logo.png", scale: 2,),
-          SizedBox(height: 40,),
+          const SizedBox(height: 40,),
            Center(
             child: Container(
-              margin: EdgeInsets.only(left: 50, right: 50),
-              child: Align(
+              margin: const EdgeInsets.only(left: 50, right: 50),
+              child: const Align(
                 alignment: Alignment.center,
                 child: Text("Rwanda Local Government Law",
                   textAlign: TextAlign.center,
                         style: TextStyle(color: appColor, fontSize: 25, fontWeight: FontWeight.bold)),
               ),
             )),
-          SizedBox(height: 30,),
-          SpinKitDoubleBounce(
+          const SizedBox(height: 30,),
+          const SpinKitDoubleBounce(
             color: appDarkColor,
           )
         ],
