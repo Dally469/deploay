@@ -28,30 +28,30 @@ class _HomeENState extends State<HomeEN> {
     _initData();
   }
 
-  Future<void> _initData() async {
+  Future<void> _initData({bool forceRefresh = false}) async {
     String fileName =
         "${widget.id}chaptersDataEN.json"; // Use string interpolation
     Directory dir = await getTemporaryDirectory();
     File file = File("${dir.path}/$fileName");
 
     try {
-      if (file.existsSync()) {
+      if (!forceRefresh && file.existsSync()) {
         print("Loading from CACHE");
         String jsonData = file.readAsStringSync();
-        List<dynamic> list1 = json.decode(jsonData);
+        final decoded = json.decode(jsonData);
         setState(() {
-          chapters = list1.map((model) => Chapters.fromJson(model)).toList();
+          chapters = Chapters.listFromResponse(decoded);
         });
       } else {
         print("Loading from API");
         final response = await HttpRequest()
-            .getPublicData("chapters/withArticleCount/${widget.id}/en");
+            .getPublicData("chapters", forceRefresh: forceRefresh);
 
         if (response.statusCode == 200) {
           String responseBody = response.body; // Get the response body
-          List<dynamic> list = json.decode(responseBody);
+          final decoded = json.decode(responseBody);
           setState(() {
-            chapters = list.map((model) => Chapters.fromJson(model)).toList();
+            chapters = Chapters.listFromResponse(decoded);
           });
 
           await file.writeAsString(responseBody,
@@ -72,7 +72,7 @@ class _HomeENState extends State<HomeEN> {
         child: Container(
           height: height + 70,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
               appColor,
               appColor,
@@ -113,7 +113,10 @@ class _HomeENState extends State<HomeEN> {
                   margin: const EdgeInsets.only(top: 10),
                   child: Row(
                     children: [
-                      AppIcon(icon: Icons.search),
+                      GestureDetector(
+                            onTap: () => _initData(forceRefresh: true),
+                            child: AppIcon(icon: Icons.refresh),
+                          ),
                       AppIcon(icon: Icons.settings),
                     ],
                   ),
@@ -130,7 +133,7 @@ class _HomeENState extends State<HomeEN> {
       appBar: _appBar(AppBar().preferredSize.height),
       backgroundColor: whiteColor,
       body: chapters.isEmpty
-          ? Center(
+          ? const Center(
               child: SizedBox(
                 height: 600,
                 child: Center(
@@ -175,9 +178,9 @@ class _HomeENState extends State<HomeEN> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         boxShadow: [
-          BoxShadow(
-            color: const Color(0XFFe8e8e8),
-            offset: const Offset(0, 5),
+          const BoxShadow(
+            color: Color(0XFFe8e8e8),
+            offset: Offset(0, 5),
             blurRadius: 5,
           ),
         ],
@@ -206,7 +209,7 @@ class _HomeENState extends State<HomeEN> {
                   children: [
                     Text(
                       chapters[index].title ?? '', //Use title, handle null
-                      style: TextStyle(color: appDarkColor),
+                      style: const TextStyle(color: appDarkColor),
                     ),
                     const SizedBox(height: 4),
                     if (widget.id != "1")

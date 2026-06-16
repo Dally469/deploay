@@ -27,28 +27,28 @@ class _HomeKGL_ENState extends State<HomeKGL_EN> {
     _initData();
   }
 
-  Future<void> _initData() async {
+  Future<void> _initData({bool forceRefresh = false}) async {
     String fileName = "categoryDataKglEN.json";
     Directory dir = await getTemporaryDirectory();
     File file = File("${dir.path}/$fileName"); // Use string interpolation
 
     try {
-      if (file.existsSync()) {
+      if (!forceRefresh && file.existsSync()) {
         print("Loading from CACHE");
         String jsonData = file.readAsStringSync();
-        List<dynamic> list1 = json.decode(jsonData);
+        final decoded = json.decode(jsonData);
         setState(() {
-          categories = list1.map((model) => Category.fromJson(model)).toList();
+          categories = Category.listFromResponse(decoded);
         });
       } else {
         print("Loading from API");
         final response =
-            await HttpRequest().getPublicData("retrieveCategoriesKglEN");
+            await HttpRequest().getPublicData("retrieveCategoriesKglEN", forceRefresh: forceRefresh);
 
         if (response.statusCode == 200) {
-          List<dynamic> list = json.decode(response.body);
+          final decoded = json.decode(response.body);
           setState(() {
-            categories = list.map((model) => Category.fromJson(model)).toList();
+            categories = Category.listFromResponse(decoded);
           });
           await file.writeAsString(response.body,
               flush: true, mode: FileMode.write);
@@ -107,7 +107,10 @@ class _HomeKGL_ENState extends State<HomeKGL_EN> {
                   margin: const EdgeInsets.only(top: 23),
                   child: Row(
                     children: [
-                      AppIcon(icon: Icons.search),
+                      GestureDetector(
+                            onTap: () => _initData(forceRefresh: true),
+                            child: AppIcon(icon: Icons.refresh),
+                          ),
                       AppIcon(icon: Icons.settings),
                     ],
                   ),

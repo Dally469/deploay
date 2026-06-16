@@ -16,18 +16,18 @@ class _OrdersState extends State<Orders> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          new Center(
+          Center(
               child: Container(
-                margin: EdgeInsets.only(left: 50, right: 50),
+                margin: const EdgeInsets.only(left: 50, right: 50),
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(widget.title,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: appColor, fontSize: 25, fontWeight: FontWeight.bold)),
+                      style: const TextStyle(color: appColor, fontSize: 25, fontWeight: FontWeight.bold)),
                 ),
               )),
-          SizedBox(height: 30,),
-          SpinKitDoubleBounce(
+          const SizedBox(height: 30,),
+          const SpinKitDoubleBounce(
             color: appDarkColor,
           )
         ],

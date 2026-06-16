@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -26,28 +28,28 @@ class _HomeKGL_RWState extends State<HomeKGL_RW> {
     _initData();
   }
 
-  Future<void> _initData() async {
+  Future<void> _initData({bool forceRefresh = false}) async {
     String fileName = "categoryDataKglRW.json";
     Directory dir = await getTemporaryDirectory();
     File file = File("${dir.path}/$fileName"); // String interpolation
 
     try {
-      if (file.existsSync()) {
+      if (!forceRefresh && file.existsSync()) {
         print("Loading from CACHE");
         String jsonData = file.readAsStringSync();
-        List<dynamic> list1 = json.decode(jsonData);
+        final decoded = json.decode(jsonData);
         setState(() {
-          categories = list1.map((model) => Category.fromJson(model)).toList();
+          categories = Category.listFromResponse(decoded);
         });
       } else {
         print("Loading from API");
         final response =
-            await HttpRequest().getPublicData("retrieveCategoriesKglRW");
+            await HttpRequest().getPublicData("retrieveCategoriesKglRW", forceRefresh: forceRefresh);
 
         if (response.statusCode == 200) {
-          List<dynamic> list = json.decode(response.body);
+          final decoded = json.decode(response.body);
           setState(() {
-            categories = list.map((model) => Category.fromJson(model)).toList();
+            categories = Category.listFromResponse(decoded);
           });
           await file.writeAsString(response.body,
               flush: true, mode: FileMode.write);
@@ -67,7 +69,7 @@ class _HomeKGL_RWState extends State<HomeKGL_RW> {
         child: Container(
           height: height + 70,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
               appDarkColor,
               appDarkColor,
@@ -90,9 +92,9 @@ class _HomeKGL_RWState extends State<HomeKGL_RW> {
                           color: whiteColor,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 190,
-                        child: const Text("Iburiro",
+                        child: Text("Iburiro",
                             overflow: TextOverflow.visible,
                             style: TextStyle(
                                 color: whiteColor,
@@ -106,7 +108,10 @@ class _HomeKGL_RWState extends State<HomeKGL_RW> {
                   margin: const EdgeInsets.only(top: 23),
                   child: Row(
                     children: [
-                      AppIcon(icon: Icons.search),
+                      GestureDetector(
+                            onTap: () => _initData(forceRefresh: true),
+                            child: AppIcon(icon: Icons.refresh),
+                          ),
                       AppIcon(icon: Icons.settings),
                     ],
                   ),
@@ -123,7 +128,7 @@ class _HomeKGL_RWState extends State<HomeKGL_RW> {
       appBar: _appBar(AppBar().preferredSize.height),
       backgroundColor: whiteColor,
       body: categories.isEmpty
-          ? Center(
+          ? const Center(
               child: SizedBox(
                 height: 600,
                 child: Center(
@@ -163,10 +168,10 @@ class _HomeKGL_RWState extends State<HomeKGL_RW> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: const Color(0XFFe8e8e8),
-            offset: const Offset(0, 5),
+            color: Color(0XFFe8e8e8),
+            offset: Offset(0, 5),
             blurRadius: 5,
           ),
         ],
@@ -191,7 +196,7 @@ class _HomeKGL_RWState extends State<HomeKGL_RW> {
                 children: [
                   Text(
                     categories[index].title ?? '',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: appDarkColor,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

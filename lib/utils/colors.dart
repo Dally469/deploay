@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-const Color appColor = Color.fromRGBO(0, 127, 126, 1);
-const Color appDarkColor = Color.fromRGBO(0, 127, 126, 1);
+const Color appColor = Color(0xFF1B9FCD);
+const Color appDarkColor = Color(0xFF1B9FCD);
 const Color orangeColor = Color.fromARGB(255, 255, 146, 4);
 const Color whiteColor = Color.fromRGBO(255, 255, 255, 1.0);
 const Color overlayColor = Color.fromRGBO(215, 215, 215, 0.2901960784313726);

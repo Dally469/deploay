@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ralga/api/http_request.dart';
 import 'package:ralga/models/article_model.dart';
-import 'package:ralga/models/chapter_model.dart';
 import 'package:ralga/utils/colors.dart';
 import 'package:ralga/widgets/app-icon.dart';
-import 'package:ralga/widgets/expandable-text.dart';
 import 'package:path_provider/path_provider.dart';
 
 class LawsEN extends StatefulWidget {
@@ -30,23 +28,21 @@ class _LawsENState extends State<LawsEN> {
 
     print("id: " + widget.id.toString());
   }
-
-
-  _initData() async {
+  Future<void> _initData({bool forceRefresh = false}) async {
 
     String fileName = widget.id+"articleDataEN.json";
     var dir = await getTemporaryDirectory();
     File file = new File(dir.path + "/" + fileName);
 
-    if (file.existsSync()) {
+    if (!forceRefresh && file.existsSync()) {
       print("Loading from CACHE");
 
       var jsonData = file.readAsStringSync();
       setState(() {
-        Iterable list1 = json.decode(jsonData);
-        laws = list1.map((model) => Article.fromJson(model)).toList();
+        final decoded = json.decode(jsonData);
+        laws = Article.listFromResponse(decoded);
 
-        print(list1);
+        print(decoded);
 
       });
       //return Category.fromJson(json.decode(jsonData));
@@ -54,13 +50,14 @@ class _LawsENState extends State<LawsEN> {
       print("Loading from API");
 
       await HttpRequest()
-          .getPublicData("articleRetrieveEN/" + widget.id)
+          .getPublicData("articleRetrieveEN/" + widget.id,
+            forceRefresh: forceRefresh)
           .then((response) {
         setState(() {
-          Iterable list = json.decode(response.body);
-          laws = list.map((model) => Article.fromJson(model)).toList();
+          final decoded = json.decode(response.body);
+          laws = Article.listFromResponse(decoded);
 
-          print(list);
+          print(decoded);
           //save json in local file
           file.writeAsStringSync(response.body,
               flush: true, mode: FileMode.write);
@@ -115,7 +112,10 @@ class _LawsENState extends State<LawsEN> {
                       margin: EdgeInsets.only(top: 25),
                       child: Row(
                         children: [
-                          AppIcon(icon: Icons.search),
+                          GestureDetector(
+                            onTap: () => _initData(forceRefresh: true),
+                            child: AppIcon(icon: Icons.refresh),
+                          ),
                         ],
                       ),
                     )
@@ -214,7 +214,13 @@ class _LawsENState extends State<LawsEN> {
                                   collapsed: Text(' ', softWrap: true, textAlign: TextAlign.justify, overflow: TextOverflow.ellipsis,),
                                   expanded: Padding(
                                     padding: const EdgeInsets.only(top: 5),
-                                    child: Text(laws[index].law == null ? "Ntayo" : laws[index].law, softWrap: true, textAlign: TextAlign.justify),
+                                    child: Text(
+                                      laws[index].law.isEmpty
+                                          ? 'Ntayo'
+                                          : laws[index].law,
+                                      softWrap: true,
+                                      textAlign: TextAlign.justify,
+                                    ),
                                   ),
                                   
                                 ),

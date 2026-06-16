@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+
 class BigText extends StatelessWidget {
   final Color? color;
   final String text;
-  double size;
-  TextOverflow overflow;
+  final double size;
+  final TextOverflow overflow;
+
   BigText({
     Key? key,
     this.color,
     required this.text,
-    this.size = 20, this.overflow=TextOverflow.ellipsis}) : super(key: key);
-
+    this.size = 20,
+    this.overflow = TextOverflow.ellipsis,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,8 @@ class BigText extends StatelessWidget {
       text,
       overflow: overflow,
       style: TextStyle(
-
+        color: color,
+        fontSize: size,
       ),
     );
   }

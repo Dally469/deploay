@@ -1,26 +1,25 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ralga/api/http_request.dart';
-import 'package:ralga/models/chapter_model.dart'; // Corrected path
+import 'package:ralga/models/chapter_model.dart';
 import 'package:ralga/pages/laws/laws-rw.dart';
 import 'package:ralga/utils/colors.dart';
-import 'package:ralga/widgets/app-icon.dart';
-import 'package:expandable/expandable.dart'; // Keep this import
-import 'package:path_provider/path_provider.dart';
 
 class HomeRW extends StatefulWidget {
   final String id, title;
-  const HomeRW(this.id, this.title, {Key? key}) : super(key: key); // Add key
+  const HomeRW(this.id, this.title, {Key? key}) : super(key: key);
 
   @override
   State<HomeRW> createState() => _HomeRWState();
 }
 
 class _HomeRWState extends State<HomeRW> {
-  List<Chapters> chapters = []; // Initialize as an empty list
+  List<Chapters> chapters = [];
+  bool _isLoading = true;
+  bool _hasError = false;
+  String _errorMessage = '';
 
   @override
   void initState() {
@@ -28,91 +27,104 @@ class _HomeRWState extends State<HomeRW> {
     _initData();
   }
 
-  Future<void> _initData() async {
-    String fileName = "${widget.id}chaptersDataRW.json"; // String interpolation
-    Directory dir = await getTemporaryDirectory();
-    File file = File("${dir.path}/$fileName");
+  Future<void> _initData({bool forceRefresh = false}) async {
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+      _errorMessage = '';
+    });
 
     try {
-      if (file.existsSync()) {
-        print("Loading from CACHE");
-        String jsonData = file.readAsStringSync();
-        List<dynamic> list1 = json.decode(jsonData);
+      final response = await HttpRequest().getPublicData(
+        'chapters',
+        forceRefresh: forceRefresh,
+      );
+
+      if (response.statusCode == 200) {
+        final decoded = json.decode(response.body);
         setState(() {
-          chapters = list1.map((model) => Chapters.fromJson(model)).toList();
+          chapters = Chapters.listFromResponse(decoded);
+          _isLoading = false;
         });
       } else {
-        print("Loading from API");
-        final response = await HttpRequest()
-            .getPublicData("chapters/withArticleCount/${widget.id}/rw");
-
-        if (response.statusCode == 200) {
-          List<dynamic> list = json.decode(response.body);
-          setState(() {
-            chapters = list.map((model) => Chapters.fromJson(model)).toList();
-          });
-
-          await file.writeAsString(response.body,
-              flush: true, mode: FileMode.write); // Use await
-        } else {
-          print('Request failed with status: ${response.statusCode}.');
-          // Handle the error appropriately
-        }
+        setState(() {
+          _hasError = true;
+          _isLoading = false;
+          _errorMessage = 'Request failed: ${response.statusCode}';
+        });
       }
     } catch (e) {
-      print("Error loading data: $e");
-      // Handle the error appropriately
+      setState(() {
+        _hasError = true;
+        _isLoading = false;
+        _errorMessage = 'Failed to load data. Please try again.';
+      });
+      debugPrint('Error loading data: $e');
     }
   }
 
   PreferredSizeWidget _appBar(double height) => PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
+        preferredSize: Size(MediaQuery.of(context).size.width, height + 82),
         child: Container(
-          height: height + 70,
+          height: height + 82,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-              appColor,
-              appColor,
-            ]),
-          ), // Background
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [appColor, Color(0xFF008C8B)],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.15),
+                blurRadius: 10,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 10, top: 25),
+            padding: const EdgeInsets.only(left: 14, right: 8, top: 26),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 25),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          color: whiteColor,
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 22),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                              color: whiteColor, size: 19),
+                          splashRadius: 20,
                         ),
-                      ),
-                      SizedBox(
-                        width: 150,
-                        child: Text(
-                          widget.title,
-                          overflow: TextOverflow.visible,
-                          style: const TextStyle(
+                        Expanded(
+                          child: Text(
+                            widget.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
                               color: whiteColor,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.15,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 10),
+                  margin: const EdgeInsets.only(top: 16),
                   child: Row(
                     children: [
-                      AppIcon(icon: Icons.search),
-                      AppIcon(icon: Icons.settings),
+                      _buildHeaderIcon(
+                        Icons.refresh_rounded,
+                        onPressed: () => _initData(forceRefresh: true),
+                      ),
+                      _buildHeaderIcon(Icons.tune_rounded),
                     ],
                   ),
                 )
@@ -122,126 +134,200 @@ class _HomeRWState extends State<HomeRW> {
         ),
       );
 
+  Widget _buildHeaderIcon(IconData icon, {VoidCallback? onPressed}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(255, 255, 255, 0.18),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: IconButton(
+        icon: Icon(icon, color: whiteColor, size: 20),
+        onPressed: onPressed ?? () {},
+        splashRadius: 20,
+      ),
+    );
+  }
+
+  Widget _buildBody() {
+    if (_isLoading) {
+      return const Center(
+        child: SpinKitDoubleBounce(
+          color: appColor,
+          size: 62,
+        ),
+      );
+    }
+
+    if (_hasError) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.cloud_off_rounded, size: 44, color: appColor),
+              const SizedBox(height: 10),
+              Text(
+                _errorMessage,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.black54, fontSize: 14),
+              ),
+              const SizedBox(height: 14),
+              ElevatedButton(
+                onPressed: () => _initData(forceRefresh: true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: appColor,
+                  foregroundColor: whiteColor,
+                ),
+                child: const Text('Subiramo'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (chapters.isEmpty) {
+      return const Center(
+        child: Text(
+          'Nta bisobanuro bihari.',
+          style: TextStyle(color: Colors.black54, fontSize: 15),
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      color: appColor,
+      onRefresh: () => _initData(forceRefresh: true),
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: chapters.length,
+        itemBuilder: (context, position) {
+          return GestureDetector(
+            onTap: () {
+              if (widget.id != '1') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LawsRW(
+                      chapters[position].id.toString(),
+                      chapters[position].description ?? '',
+                    ),
+                  ),
+                );
+              }
+            },
+            child: _buildShopItem(position),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(AppBar().preferredSize.height),
-      backgroundColor: whiteColor,
-      body: chapters.isEmpty
-          ? Center(
-              child: SizedBox(
-                height: 600,
-                child: Center(
-                  child: SpinKitDoubleBounce(
-                    color: appColor,
-                    size: 70,
-                  ),
-                ),
-              ),
-            )
-          : ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: chapters.length,
-              itemBuilder: (context, position) {
-                return GestureDetector(
-                  onTap: () {
-                    if (widget.id != "1") {
-                      // Use != directly
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LawsRW(
-                            chapters[position].id.toString(),
-                            chapters[position].description ??
-                                '', // User Description
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: _buildShopItem(position),
-                );
-              },
-            ),
+      backgroundColor: const Color(0xFFF6F8F9),
+      body: _buildBody(),
     );
   }
 
   Widget _buildShopItem(int index) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(14),
         color: Colors.white,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: const Color(0XFFe8e8e8),
-            offset: const Offset(0, 5),
-            blurRadius: 5,
+            color: Color.fromRGBO(0, 0, 0, 0.06),
+            offset: Offset(0, 4),
+            blurRadius: 10,
           ),
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(11),
         child: Row(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align items to the top
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 35,
-              width: 35,
-              margin: const EdgeInsets.all(3),
+              height: 42,
+              width: 42,
+              margin: const EdgeInsets.only(top: 2, right: 8),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: overlayWhiteColor, width: 6),
               ),
-              child: Image.asset("assets/images/rwlogo.png"),
+              child: Image.asset('assets/images/rwlogo.png'),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      chapters[index].title ?? '', // Use title, handle null
-                      style: const TextStyle(color: appDarkColor),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    chapters[index].title ?? '',
+                    style: const TextStyle(
+                      color: appDarkColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
                     ),
-                    const SizedBox(height: 4),
-                    if (widget.id != "1")
-                      Text(
-                        "Ingingo : ${chapters[index].articleCount ?? 0}", //handle null
-                        style: const TextStyle(
-                            fontSize: 15, color: Colors.black45),
+                  ),
+                  const SizedBox(height: 4),
+                  if (widget.id != '1')
+                    Text(
+                      'Ingingo: ${chapters[index].articleCount ?? 0}',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w500,
                       ),
-                    if (widget.id == "1")
-                      ExpandablePanel(
-                        header: Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            chapters[index].title ??
-                                '', //Use title, handle null
-                            style: const TextStyle(
-                                fontSize: 14, color: appDarkColor),
+                    ),
+                  if (widget.id == '1')
+                    Theme(
+                      data: Theme.of(context).copyWith(
+                        dividerColor: Colors.transparent,
+                      ),
+                      child: ExpansionTile(
+                        tilePadding: EdgeInsets.zero,
+                        iconColor: appColor,
+                        collapsedIconColor: appColor,
+                        childrenPadding: const EdgeInsets.only(bottom: 6),
+                        title: const Text(
+                          'Soma ibisobanuro',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        collapsed: const Text(
-                          ' ',
-                          softWrap: true,
-                          textAlign: TextAlign.justify,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        expanded: Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            chapters[index].description ??
-                                '', // Use description, handle null
+                        children: [
+                          Text(
+                            chapters[index].description ?? '',
                             softWrap: true,
                             textAlign: TextAlign.justify,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              height: 1.35,
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                  ],
-                ),
+                    ),
+                  if (widget.id != '1')
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        Icons.chevron_right_rounded,
+                        size: 20,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                ],
               ),
             ),
           ],

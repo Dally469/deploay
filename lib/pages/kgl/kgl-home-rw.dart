@@ -28,29 +28,29 @@ class _KglHomeRWState extends State<KglHomeRW> {
     _initData();
   }
 
-  Future<void> _initData() async {
+  Future<void> _initData({bool forceRefresh = false}) async {
     String fileName =
         "${widget.id}chaptersKglDataRW.json"; // String interpolation
     Directory dir = await getTemporaryDirectory();
     File file = File("${dir.path}/$fileName");
 
     try {
-      if (file.existsSync()) {
+      if (!forceRefresh && file.existsSync()) {
         print("Loading from CACHE");
         String jsonData = file.readAsStringSync();
-        List<dynamic> list1 = json.decode(jsonData);
+        final decoded = json.decode(jsonData);
         setState(() {
-          chapters = list1.map((model) => Chapters.fromJson(model)).toList();
+          chapters = Chapters.listFromResponse(decoded);
         });
       } else {
         print("Loading from API");
         final response = await HttpRequest()
-            .getPublicData("chapters/withArticleCount/${widget.id}/rw");
+            .getPublicData("chapters", forceRefresh: forceRefresh);
 
         if (response.statusCode == 200) {
-          List<dynamic> list = json.decode(response.body);
+          final decoded = json.decode(response.body);
           setState(() {
-            chapters = list.map((model) => Chapters.fromJson(model)).toList();
+            chapters = Chapters.listFromResponse(decoded);
           });
 
           await file.writeAsString(response.body,
@@ -110,9 +110,12 @@ class _KglHomeRWState extends State<KglHomeRW> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 23),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      AppIcon(icon: Icons.search),
+                      GestureDetector(
+                            onTap: () => _initData(forceRefresh: true),
+                            child: AppIcon(icon: Icons.refresh),
+                          ),
                       AppIcon(icon: Icons.settings),
                     ],
                   ),
