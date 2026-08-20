@@ -30,7 +30,7 @@ class _HomeENState extends State<HomeEN> {
 
   Future<void> _initData({bool forceRefresh = false}) async {
     String fileName =
-        "${widget.id}chaptersDataEN.json"; // Use string interpolation
+      "${widget.id}chaptersDataEN_v2.json"; // Use string interpolation
     Directory dir = await getTemporaryDirectory();
     File file = File("${dir.path}/$fileName");
 
@@ -45,7 +45,11 @@ class _HomeENState extends State<HomeEN> {
       } else {
         print("Loading from API");
         final response = await HttpRequest()
-            .getPublicData("chapters", forceRefresh: forceRefresh);
+            .getPublicData(
+          "chapters/category/${widget.id}",
+          forceRefresh: forceRefresh,
+          cacheKey: "chapters_en_${widget.id}_v1",
+        );
 
         if (response.statusCode == 200) {
           String responseBody = response.body; // Get the response body
@@ -68,56 +72,67 @@ class _HomeENState extends State<HomeEN> {
   }
 
   PreferredSizeWidget _appBar(double height) => PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
+        preferredSize: Size(MediaQuery.of(context).size.width, height + 82),
         child: Container(
-          height: height + 70,
+          height: height + 82,
           width: MediaQuery.of(context).size.width,
           decoration: const BoxDecoration(
-            gradient: LinearGradient(colors: [
-              appColor,
-              appColor,
-            ]),
-          ), // Background
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [appColor, Color(0xFF008C8B)],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.15),
+                blurRadius: 10,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 10, top: 25),
+            padding: const EdgeInsets.only(left: 14, right: 8, top: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 25),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          color: whiteColor,
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 22),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                              color: whiteColor, size: 19),
+                          splashRadius: 20,
                         ),
-                      ),
-                      SizedBox(
-                        width: 150,
-                        child: Text(
-                          widget.title,
-                          overflow: TextOverflow.visible,
-                          style: const TextStyle(
+                        Expanded(
+                          child: Text(
+                            widget.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
                               color: whiteColor,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.15,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 10),
+                  margin: const EdgeInsets.only(top: 26),
                   child: Row(
                     children: [
-                      GestureDetector(
-                            onTap: () => _initData(forceRefresh: true),
-                            child: AppIcon(icon: Icons.refresh),
-                          ),
-                      AppIcon(icon: Icons.settings),
+                      _buildHeaderIcon(
+                        Icons.refresh_rounded,
+                        onPressed: () => _initData(forceRefresh: true),
+                      ),
+                      // _buildHeaderIcon(Icons.tune_rounded),
                     ],
                   ),
                 )
@@ -127,6 +142,20 @@ class _HomeENState extends State<HomeEN> {
         ),
       );
 
+  Widget _buildHeaderIcon(IconData icon, {VoidCallback? onPressed}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(255, 255, 255, 0.18),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: IconButton(
+        icon: Icon(icon, color: whiteColor, size: 20),
+        onPressed: onPressed ?? () {},
+        splashRadius: 20,
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,88 +200,101 @@ class _HomeENState extends State<HomeEN> {
     );
   }
 
-  Widget _buildShopItem(int index) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        boxShadow: [
-          const BoxShadow(
-            color: Color(0XFFe8e8e8),
-            offset: Offset(0, 5),
-            blurRadius: 5,
+ Widget _buildShopItem(int index) {
+  final chapter = chapters[index];
+
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(14),
+      color: Colors.white,
+      border: Border.all(color: const Color(0xFFE6EDF2)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.04),
+          blurRadius: 6,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Logo
+          Container(
+            height: 40,
+            width: 40,
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF0F4F8),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
+            ),
+            child: Image.asset('assets/images/rwlogo.png', fit: BoxFit.contain),
+          ),
+          const SizedBox(width: 12),
+
+          // Title + article count / description
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  chapter.title ?? '',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: appDarkColor,
+                    fontWeight: FontWeight.w600,
+                    height: 1.3,
+                  ),
+                ),
+                if (widget.id != "1") ...[
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      const Icon(Icons.article_outlined, size: 13, color: Colors.black38),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${chapter.articleCount ?? 0} Articles',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black45,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (widget.id == "1" && (chapter.description ?? '').isNotEmpty) ...[
+                  const SizedBox(height: 5),
+                  Text(
+                    chapter.description ?? '',
+                    softWrap: true,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF718096),
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+
+          // Chevron arrow
+          const SizedBox(width: 8),
+          const Icon(
+            Icons.chevron_right_rounded,
+            size: 20,
+            color: Colors.black26,
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align items to the top
-          children: [
-            Container(
-              height: 35,
-              width: 35,
-              margin: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: overlayWhiteColor, width: 6),
-              ),
-              child: Image.asset("assets/images/rwlogo.png"),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      chapters[index].title ?? '', //Use title, handle null
-                      style: const TextStyle(color: appDarkColor),
-                    ),
-                    const SizedBox(height: 4),
-                    if (widget.id != "1")
-                      Text(
-                        "Articles : ${chapters[index].articleCount ?? 0}", //handle null
-                        style: const TextStyle(
-                            fontSize: 15, color: Colors.black45),
-                      ),
-                    if (widget.id ==
-                        "1") // Use if instead of ternary inside Text
-                      ExpandablePanel(
-                        header: Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            chapters[index].title ??
-                                '', //Use title, handle null
-                            style: const TextStyle(
-                                fontSize: 16, color: appDarkColor),
-                          ),
-                        ),
-                        collapsed: const Text(
-                          " ",
-                          softWrap: true,
-                          textAlign: TextAlign.justify,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        expanded: Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            chapters[index].description ??
-                                '', // Use description, handle null
-                            softWrap: true,
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+    ),
+  );
+}
 }

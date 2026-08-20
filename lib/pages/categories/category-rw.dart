@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,6 +26,23 @@ class _CategoryRWState extends State<CategoryRW> {
     _initData();
   }
 
+  // Helper: Robust JSON parsing
+  dynamic _safeJsonDecode(String source) {
+    try {
+      // Clean common issues
+      String cleaned = source.trim();
+
+      // Replace unescaped newlines and control characters
+      cleaned = cleaned.replaceAll(RegExp(r'[\n\r\t]'), '\\n');
+      cleaned = cleaned.replaceAll(RegExp(r'[\x00-\x1F\x7F]'), '');
+
+      return json.decode(cleaned);
+    } catch (e) {
+      print('JSON Decode Error: $e');
+      rethrow;
+    }
+  }
+
   Future<void> _initData({bool forceRefresh = false}) async {
     if (mounted) {
       setState(() {
@@ -42,35 +58,44 @@ class _CategoryRWState extends State<CategoryRW> {
     try {
       if (!forceRefresh && file.existsSync()) {
         final String jsonData = file.readAsStringSync();
-        final decoded = json.decode(jsonData);
-        setState(() {
-          categories = Category.listFromResponse(decoded);
-          _isLoading = false;
-        });
+        final decoded = _safeJsonDecode(jsonData);
+
+        if (mounted) {
+          setState(() {
+            categories = Category.listFromResponse(decoded);
+            _isLoading = false;
+          });
+        }
       } else {
-        final response = await HttpRequest()
-            .getPublicData(
+        final response = await HttpRequest().getPublicData(
           'categories/lang/rw',
           forceRefresh: forceRefresh,
           cacheKey: 'categories_rw_v1',
         );
 
         if (response.statusCode == 200) {
-          final decoded = json.decode(response.body);
-          setState(() {
-            categories = Category.listFromResponse(decoded);
-            _isLoading = false;
-          });
-          await file.writeAsString(response.body,
-              flush: true, mode: FileMode.write);
+          final decoded = _safeJsonDecode(response.body);
+
+          if (mounted) {
+            setState(() {
+              categories = Category.listFromResponse(decoded);
+              _isLoading = false;
+            });
+          }
+
+          // Save cleaned version to cache
+          await file.writeAsString(response.body, flush: true, mode: FileMode.write);
         } else {
-          setState(() {
-            _isLoading = false;
-            _errorMessage = 'Byanze kugarura amakuru (${response.statusCode}).';
-          });
+          if (mounted) {
+            setState(() {
+              _isLoading = false;
+              _errorMessage = 'Byanze kugarura amakuru (${response.statusCode}).';
+            });
+          }
         }
       }
-    } catch (_) {
+    } catch (e) {
+      print('Error loading categories: $e');
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -80,6 +105,7 @@ class _CategoryRWState extends State<CategoryRW> {
     }
   }
 
+  // Rest of your code remains unchanged...
   PreferredSizeWidget _appBar(double height) => PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, height + 82),
         child: Container(
@@ -110,11 +136,7 @@ class _CategoryRWState extends State<CategoryRW> {
                       children: [
                         IconButton(
                           onPressed: () => Navigator.pop(context),
-                          icon: const Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            color: whiteColor,
-                            size: 19,
-                          ),
+                          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: whiteColor, size: 19),
                           splashRadius: 20,
                         ),
                         const Expanded(
@@ -178,72 +200,86 @@ class _CategoryRWState extends State<CategoryRW> {
   Widget _buildCategoryItem(int index) {
     final category = categories[index];
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
         color: Colors.white,
         border: Border.all(color: const Color(0xFFE6EDF2)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 30,
-                width: 30,
-                child: Image.asset('assets/images/rwlogo.png'),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  category.title ?? '',
-                  style: const TextStyle(
-                    color: appDarkColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    height: 1.2,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          if ((category.lawNo ?? '').isNotEmpty) ...[
-            const SizedBox(height: 6),
-            Text(
-              category.lawNo ?? '',
-              style: const TextStyle(
-                color: Colors.black54,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              const Icon(Icons.arrow_forward_rounded,
-                  size: 16, color: Colors.green),
-              const SizedBox(width: 8),
-              Text(
-                _countText(category),
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const Spacer(),
-              const Icon(
-                Icons.chevron_right_rounded,
-                color: Colors.black38,
-                size: 20,
-              ),
-            ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
           ),
         ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 42,
+              width: 42,
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0F4F8),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFFE2E8F0)),
+              ),
+              child: Image.asset('assets/images/rwlogo.png', fit: BoxFit.contain),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    category.title ?? '',
+                    style: const TextStyle(
+                      color: appDarkColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      height: 1.3,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        width: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Icon(Icons.arrow_forward_rounded, size: 13, color: Colors.green),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        _countText(category),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black45,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 28,
+              width: 28,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0F4F8),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(Icons.chevron_right_rounded, color: appDarkColor, size: 18),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -254,12 +290,7 @@ class _CategoryRWState extends State<CategoryRW> {
       appBar: _appBar(AppBar().preferredSize.height),
       backgroundColor: const Color(0xFFF6F8F9),
       body: _isLoading
-          ? const Center(
-              child: SpinKitDoubleBounce(
-                color: appColor,
-                size: 70,
-              ),
-            )
+          ? const Center(child: SpinKitDoubleBounce(color: appColor, size: 70))
           : _errorMessage != null
               ? Center(
                   child: Padding(
@@ -267,14 +298,7 @@ class _CategoryRWState extends State<CategoryRW> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          _errorMessage!,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14,
-                          ),
-                        ),
+                        Text(_errorMessage!, textAlign: TextAlign.center, style: const TextStyle(color: Colors.black54, fontSize: 14)),
                         const SizedBox(height: 12),
                         ElevatedButton(
                           onPressed: () => _initData(forceRefresh: true),
@@ -291,13 +315,7 @@ class _CategoryRWState extends State<CategoryRW> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Text(
-                              'Nta makuru ahari.',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 14,
-                              ),
-                            ),
+                            const Text('Nta makuru ahari.', style: TextStyle(color: Colors.black54, fontSize: 14)),
                             const SizedBox(height: 12),
                             ElevatedButton(
                               onPressed: () => _initData(forceRefresh: true),
@@ -308,26 +326,26 @@ class _CategoryRWState extends State<CategoryRW> {
                       ),
                     )
                   : ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 16),
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomeRW(
-                          categories[index].id.toString(),
-                          categories[index].title.toString(),
-                        ),
-                      ),
-                    );
-                  },
-                  child: _buildCategoryItem(index),
-                );
-              },
-            ),
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.fromLTRB(8, 10, 8, 16),
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeRW(
+                                  categories[index].id.toString(),
+                                  categories[index].title.toString(),
+                                ),
+                              ),
+                            );
+                          },
+                          child: _buildCategoryItem(index),
+                        );
+                      },
+                    ),
     );
   }
 }

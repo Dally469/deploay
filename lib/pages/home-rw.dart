@@ -36,8 +36,9 @@ class _HomeRWState extends State<HomeRW> {
 
     try {
       final response = await HttpRequest().getPublicData(
-        'chapters',
+        'chapters/category/${widget.id}',
         forceRefresh: forceRefresh,
+        cacheKey: 'chapters_rw_${widget.id}_v1',
       );
 
       if (response.statusCode == 200) {
@@ -83,7 +84,7 @@ class _HomeRWState extends State<HomeRW> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 14, right: 8, top: 26),
+            padding: const EdgeInsets.only(left: 14, right: 8, top: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,11 +103,11 @@ class _HomeRWState extends State<HomeRW> {
                         Expanded(
                           child: Text(
                             widget.title,
-                            maxLines: 2,
+                            maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               color: whiteColor,
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w700,
                               letterSpacing: 0.15,
                             ),
@@ -117,14 +118,14 @@ class _HomeRWState extends State<HomeRW> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 16),
+                  margin: const EdgeInsets.only(top: 26),
                   child: Row(
                     children: [
                       _buildHeaderIcon(
                         Icons.refresh_rounded,
                         onPressed: () => _initData(forceRefresh: true),
                       ),
-                      _buildHeaderIcon(Icons.tune_rounded),
+                      // _buildHeaderIcon(Icons.tune_rounded),
                     ],
                   ),
                 )
@@ -236,103 +237,100 @@ class _HomeRWState extends State<HomeRW> {
   }
 
   Widget _buildShopItem(int index) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.06),
-            offset: Offset(0, 4),
-            blurRadius: 10,
+  final chapter = chapters[index];
+
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(14),
+      color: Colors.white,
+      border: Border.all(color: const Color(0xFFE6EDF2)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.04),
+          blurRadius: 6,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Logo
+          Container(
+            height: 40,
+            width: 40,
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF0F4F8),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
+            ),
+            child: Image.asset('assets/images/rwlogo.png', fit: BoxFit.contain),
+          ),
+          const SizedBox(width: 12),
+
+          // Title + article count / description
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  chapter.title ?? '',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: appDarkColor,
+                    fontWeight: FontWeight.w600,
+                    height: 1.3,
+                  ),
+                ),
+                if (widget.id != "1") ...[
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      const Icon(Icons.article_outlined, size: 13, color: Colors.black38),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${chapter.articleCount ?? 0} Ingingo',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black45,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (widget.id == "1" && (chapter.description ?? '').isNotEmpty) ...[
+                  const SizedBox(height: 5),
+                  Text(
+                    chapter.description ?? '',
+                    softWrap: true,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF718096),
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+
+          // Chevron arrow
+          const SizedBox(width: 8),
+          const Icon(
+            Icons.chevron_right_rounded,
+            size: 20,
+            color: Colors.black26,
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(11),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 42,
-              width: 42,
-              margin: const EdgeInsets.only(top: 2, right: 8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: overlayWhiteColor, width: 6),
-              ),
-              child: Image.asset('assets/images/rwlogo.png'),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    chapters[index].title ?? '',
-                    style: const TextStyle(
-                      color: appDarkColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  if (widget.id != '1')
-                    Text(
-                      'Ingingo: ${chapters[index].articleCount ?? 0}',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  if (widget.id == '1')
-                    Theme(
-                      data: Theme.of(context).copyWith(
-                        dividerColor: Colors.transparent,
-                      ),
-                      child: ExpansionTile(
-                        tilePadding: EdgeInsets.zero,
-                        iconColor: appColor,
-                        collapsedIconColor: appColor,
-                        childrenPadding: const EdgeInsets.only(bottom: 6),
-                        title: const Text(
-                          'Soma ibisobanuro',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.black54,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        children: [
-                          Text(
-                            chapters[index].description ?? '',
-                            softWrap: true,
-                            textAlign: TextAlign.justify,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              height: 1.35,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  if (widget.id != '1')
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Icon(
-                        Icons.chevron_right_rounded,
-                        size: 20,
-                        color: Colors.grey.shade500,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+    ),
+  );
+}
 }

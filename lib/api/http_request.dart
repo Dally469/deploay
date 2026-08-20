@@ -10,7 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HttpRequest {
   // Postman collection uses http://localhost:8585 as baseUrl.
   // Keep compatibility by letting the value be overridden from SharedPreferences.
-  static const String _defaultBaseUrl = 'http://172.20.10.12:8585/api';
+  static const String _defaultBaseUrl = 'http://41.186.73.134:8585/api';
+  // static const String _defaultBaseUrl = 'http://172.20.10.12:8585/api';
   static const Duration _requestTimeout = Duration(seconds: 20);
 
   final String _imageUrl = 'https://ralgaapi.awm-global.org/assets/pdf/';

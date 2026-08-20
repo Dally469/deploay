@@ -98,76 +98,110 @@ class _InformationENState extends State<InformationEN> {
     );
   }
 
-  Widget _buildInfoCard({
-    required String title,
-    required String actionLabel,
-    required IconData actionIcon,
-    required Color actionColor,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
-          border: Border.all(color: const Color(0xFFE6EDF2)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+Widget _buildInfoCard({
+  required String title,
+  required String actionLabel,
+  required IconData actionIcon,
+  required Color actionColor,
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        color: Colors.white,
+        border: Border.all(color: const Color(0xFFE6EDF2)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 28,
-                  width: 28,
-                  child: Image.asset('assets/images/rwlogo.png'),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
+            // ── Logo ────────────────────────────────────────
+            Container(
+              height: 42,
+              width: 42,
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0F4F8),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFFE2E8F0)),
+              ),
+              child: Image.asset('assets/images/rwlogo.png', fit: BoxFit.contain),
+            ),
+            const SizedBox(width: 12),
+
+            // ── Title + action label ─────────────────────────
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     title,
                     style: const TextStyle(
                       color: appDarkColor,
-                      fontSize: 15,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      height: 1.2,
+                      height: 1.3,
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Icon(actionIcon, size: 16, color: actionColor),
-                const SizedBox(width: 8),
-                Text(
-                  actionLabel,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Container(
+                        height: 22,
+                        width: 22,
+                        decoration: BoxDecoration(
+                          color: actionColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Icon(actionIcon, size: 13, color: actionColor),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        actionLabel,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black45,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const Spacer(),
-                const Icon(
-                  Icons.chevron_right_rounded,
-                  color: Colors.black38,
-                  size: 20,
-                ),
-              ],
+                ],
+              ),
+            ),
+
+            // ── Chevron ──────────────────────────────────────
+            Container(
+              height: 28,
+              width: 28,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0F4F8),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.chevron_right_rounded,
+                color: appDarkColor,
+                size: 18,
+              ),
             ),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +246,7 @@ class _InformationENState extends State<InformationEN> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const LawsCategoryEN(),
+                  builder: (context) => const CategoryEN(),
                 ),
               );
             },

@@ -1,28 +1,7 @@
-import 'dart:async';
-import 'dart:io';
-
 import "package:flutter/material.dart";
-import 'package:http/http.dart' as http;
-import 'package:ralga/pages/infos/laws-category-en.dart';
-import 'package:ralga/pages/infos/laws-category-fr.dart';
 import 'package:ralga/utils/colors.dart';
-import 'package:ralga/widgets/app-icon.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:share_plus/share_plus.dart';
-
-///sharing platform
-// enum Share {
-//   facebook,
-//   messenger,
-//   twitter,
-//   whatsapp,
-//   whatsapp_personal,
-//   whatsapp_business,
-//   share_system,
-//   share_instagram,
-//   share_telegram
-// }
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class DecentralizationFR extends StatefulWidget {
   const DecentralizationFR({Key? key}) : super(key: key);
@@ -31,254 +10,367 @@ class DecentralizationFR extends StatefulWidget {
   State<DecentralizationFR> createState() => _DecentralizationFRState();
 }
 
+enum _Year { y2001, y2012, y2021 }
+
 class _DecentralizationFRState extends State<DecentralizationFR> {
-  File? file;
-  bool videoEnable = false;
-  bool isNew = true;
+  _Year selectedYear = _Year.y2021;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-// Future<void> onButtonTap(Share share) async {
-//     String msg =
-//         'Flutter share is great!!\n Check out full example at https://pub.dev/packages/flutter_share_me';
-//     String url = 'https://pub.dev/packages/flutter_share_me';
+  // PDF view controller + loading/error state
+  final PdfViewerController _pdfController = PdfViewerController();
+  bool _isLoading = true;
+  bool _hasError = false;
+  String? _errorMessage;
+  int _loadAttempt = 0; // bump to force SfPdfViewer to rebuild on retry
 
-//     String? response;
-//     final FlutterShareMe flutterShareMe = FlutterShareMe();
-//     switch (share) {
-//       case Share.facebook:
-//         response = await flutterShareMe.shareToFacebook(url: url, msg: msg);
-//         break;
-//       case Share.messenger:
-//         response = await flutterShareMe.shareToMessenger(url: url, msg: msg);
-//         break;
-//       case Share.twitter:
-//         response = await flutterShareMe.shareToTwitter(url: url, msg: msg);
-//         break;
-//       case Share.whatsapp:
-//         if (file != null) {
-//           response = await flutterShareMe.shareToWhatsApp(
-//               imagePath: file!.path,
-//               fileType: videoEnable ? FileType.video : FileType.image);
-//         } else {
-//           response = await flutterShareMe.shareToWhatsApp(msg: msg);
-//         }
-//         break;
-//       case Share.whatsapp_business:
-//         response = await flutterShareMe.shareToWhatsApp(msg: msg);
-//         break;
-//       case Share.share_system:
-//         response = await flutterShareMe.shareToSystem(msg: msg);
-//         break;
-//       case Share.whatsapp_personal:
-//         response = await flutterShareMe.shareWhatsAppPersonalMessage(
-//             message: msg, phoneNumber: 'phone-number-with-country-code');
-//         break;
-//       case Share.share_instagram:
-//         response = await flutterShareMe.shareToInstagram(
-//             filePath: file!.path,
-//             fileType: videoEnable ? FileType.video : FileType.image);
-//         break;
-//       case Share.share_telegram:
-//         response = await flutterShareMe.shareToTelegram(msg: msg);
-//         break;
-//     }
-//     debugPrint(response);
-//   }
-  _appBar(height) => PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, height + 145),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: height + 145,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  appDarkColor,
-                  appDarkColor,
-                ]),
-              ), // Background
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 25),
+  // NOTE: follows the same naming convention used by the EN/RW screens
+  // (french_decentralization_{year}.pdf). Update these if the actual
+  // hosted filenames differ.
+  // static const Map<_Year, String> _pdfUrls = {
+  //   _Year.y2001:
+  //       'https://ralgaapi.awm-global.org/public/assets/pdf/french_decentralization_2001.pdf',
+  //   _Year.y2012:
+  //       'https://ralgaapi.awm-global.org/public/assets/pdf/french_decentralization_2012.pdf',
+  //   _Year.y2021:
+  //       'https://ralgaapi.awm-global.org/public/assets/pdf/french_decentralization_2021.pdf',
+  // };
+  static const Map<_Year, String> _pdfUrls = {
+    _Year.y2001:
+        'https://drive.google.com/file/d/1GrCtIlwXx8UtBJAMTlzbMdYxYEDfQxiC/view',
+    _Year.y2012:
+        'https://drive.google.com/file/d/1GrCtIlwXx8UtBJAMTlzbMdYxYEDfQxiC/view',
+    _Year.y2021:
+        'https://drive.google.com/file/d/1GrCtIlwXx8UtBJAMTlzbMdYxYEDfQxiC/view',
+  };
+
+  String get _currentUrl => _pdfUrls[selectedYear]!;
+
+  void _selectYear(_Year year) {
+    if (selectedYear == year) return;
+    setState(() {
+      selectedYear = year;
+      _isLoading = true;
+      _hasError = false;
+      _errorMessage = null;
+      _loadAttempt++;
+    });
+  }
+
+  void _retry() {
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+      _errorMessage = null;
+      _loadAttempt++;
+    });
+  }
+
+  PreferredSizeWidget _appBar(double height) {
+    return PreferredSize(
+      preferredSize: Size(MediaQuery.of(context).size.width, height + 150),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [appDarkColor, appDarkColor.withOpacity(0.85)],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 25),
+                    Expanded(
                       child: Row(
+                        mainAxisSize: MainAxisSize.max,
                         children: [
-                          GestureDetector(
-                            onTap: (() => Navigator.pop(context)),
-                            child: const Icon(
-                              Icons.arrow_back_ios,
-                              color: whiteColor,
-                            ),
+                          IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: const Icon(Icons.arrow_back_ios,
+                                color: whiteColor),
                           ),
-                          Container(
-                            width: 200,
-                            child: const Text("Decentralization",
-                                overflow: TextOverflow.visible,
-                                style: TextStyle(
-                                    color: whiteColor,
-                                    fontSize: 26,
-                                    fontWeight: FontWeight.w600)),
+                          const Expanded(
+                            child: Text(
+                              "Décentralisation",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                color: whiteColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Row(
-                        children: [
-                          InkWell(
-                              onTap: () {
-                                // Share.share('check out my website \n  https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf');
-                                //onButtonTap(Share.whatsapp);
-                                //Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryFR()),);
-                              },
-                              child: const AppIcon(icon: Icons.share)),
+                    IconButton(
+                      onPressed: () {
+                        Share.share(_currentUrl);
+                      },
+                      icon: const Icon(Icons.share, color: whiteColor),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    _yearChip("2001", _Year.y2001),
+                    const SizedBox(width: 10),
+                    _yearChip("2012", _Year.y2012),
+                    const SizedBox(width: 10),
+                    _yearChip("2021", _Year.y2021),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-                        ],
+  Widget _yearChip(String label, _Year year) {
+    final bool isSelected = selectedYear == year;
+    return Expanded(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: () => _selectYear(year),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          height: 64,
+          decoration: BoxDecoration(
+            color: whiteColor,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: isSelected ? appColor : Colors.transparent,
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Année",
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                  color: isSelected ? appColor : Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: isSelected ? appColor : Colors.black87,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPdfArea() {
+    return Stack(
+      children: [
+        SfPdfViewer.network(
+          _currentUrl,
+          key: ValueKey('${_currentUrl}_$_loadAttempt'),
+          controller: _pdfController,
+          canShowPaginationDialog: true,
+          onDocumentLoaded: (details) {
+            if (!mounted) return;
+            setState(() {
+              _isLoading = false;
+              _hasError = false;
+            });
+          },
+          onDocumentLoadFailed: (details) {
+            if (!mounted) return;
+            setState(() {
+              _isLoading = false;
+              _hasError = true;
+              _errorMessage = details.description.isNotEmpty
+                  ? details.description
+                  : "Impossible d'ouvrir ce document.";
+            });
+          },
+        ),
+
+        if (_isLoading && !_hasError)
+          Container(
+            color: whiteColor,
+            child: const _PdfLoadingIndicator(),
+          ),
+
+        if (_hasError)
+          Container(
+            color: whiteColor,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.cloud_off_rounded,
+                      size: 56,
+                      color: Colors.grey.shade400,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Impossible d'ouvrir ce document",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade700,
                       ),
-                    )
+                    ),
+                    if (_errorMessage != null) ...[
+                      const SizedBox(height: 6),
+                      Text(
+                        _errorMessage!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 20),
+                    ElevatedButton.icon(
+                      onPressed: _retry,
+                      icon: const Icon(Icons.refresh),
+                      label: const Text("Réessayer"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: appColor,
+                        foregroundColor: whiteColor,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-
-            Container(), // Required some widget in between to float AppBar
-            Positioned(
-              bottom: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        isNew = false;
-                      });
-                    },
-                    child: Container(
-                      height: 60,
-                      width: 160,
-                      color: whiteColor,
-                      margin: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          isNew == false
-                              ? const Icon(
-                                  Icons.check_circle,
-                                  size: 30,
-                                  color: appColor,
-                                )
-                              : const Icon(
-                                  Icons.check_circle,
-                                  color: whiteColor,
-                                ),
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Annee",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                  )),
-                              Text("2001",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25)),
-                            ],
-                          ),
-                          const Icon(
-                            Icons.check_circle,
-                            color: whiteColor,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        isNew = true;
-                      });
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 160,
-                      color: whiteColor,
-                      margin: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          isNew == true
-                              ? const Icon(
-                                  Icons.check_circle,
-                                  size: 30,
-                                  color: appColor,
-                                )
-                              : const Icon(
-                                  Icons.check_circle,
-                                  color: whiteColor,
-                                ),
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Annee",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                  )),
-                              Text("2021",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25)),
-                            ],
-                          ),
-                          const Icon(
-                            Icons.check_circle,
-                            color: whiteColor,
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      );
-
-  
+          ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        appBar: _appBar(AppBar().preferredSize.height),
-        backgroundColor: whiteColor,
-        body: isNew == true
-            ? Container(
-                color: appColor,
-                margin: const EdgeInsets.all(3),
-                // child: SfPdfViewer.network('https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')
-            )
-            : Container(
-                color: orangeColor,
-                margin: const EdgeInsets.all(3),
-                // child: SfPdfViewer.network('https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')
-    ));
+      key: _scaffoldKey,
+      appBar: _appBar(AppBar().preferredSize.height),
+      backgroundColor: whiteColor,
+      body: Container(
+        margin: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: _buildPdfArea(),
+        ),
+      ),
+    );
+  }
+}
+
+/// Animated loading state shown while the PDF document is being
+/// downloaded/parsed by SfPdfViewer.
+class _PdfLoadingIndicator extends StatefulWidget {
+  const _PdfLoadingIndicator();
+
+  @override
+  State<_PdfLoadingIndicator> createState() => _PdfLoadingIndicatorState();
+}
+
+class _PdfLoadingIndicatorState extends State<_PdfLoadingIndicator>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 56,
+            height: 56,
+            child: CircularProgressIndicator(
+              strokeWidth: 4,
+              color: appColor,
+              backgroundColor: appColor.withOpacity(0.12),
+            ),
+          ),
+          const SizedBox(height: 18),
+          Text(
+            "Ouverture du document...",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey.shade600,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            "Cela peut prendre un instant",
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade400,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -2,7 +2,7 @@
     package="com.example.ralga">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="ralga"
+        android:label="RALGA"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher">
         <activity

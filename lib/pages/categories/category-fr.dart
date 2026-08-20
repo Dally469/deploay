@@ -176,78 +176,109 @@ class _CategoryFRState extends State<CategoryFR> {
     return 'Chapitres: $count';
   }
 
-  Widget _buildCategoryItem(int index) {
+   Widget _buildCategoryItem(int index) {
     final category = categories[index];
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
         color: Colors.white,
         border: Border.all(color: const Color(0xFFE6EDF2)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 30,
-                width: 30,
-                child: Image.asset('assets/images/rwlogo.png'),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  category.title ?? '',
-                  style: const TextStyle(
-                    color: appDarkColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    height: 1.2,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          if ((category.lawNo ?? '').isNotEmpty) ...[
-            const SizedBox(height: 6),
-            Text(
-              category.lawNo ?? '',
-              style: const TextStyle(
-                color: Colors.black54,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              const Icon(Icons.arrow_forward_rounded,
-                  size: 16, color: Colors.green),
-              const SizedBox(width: 8),
-              Text(
-                _countText(category),
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const Spacer(),
-              const Icon(
-                Icons.chevron_right_rounded,
-                color: Colors.black38,
-                size: 20,
-              ),
-            ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // ── Logo ──────────────────────────────────────────
+            Container(
+              height: 42,
+              width: 42,
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0F4F8),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFFE2E8F0)),
+              ),
+              child:
+                  Image.asset('assets/images/rwlogo.png', fit: BoxFit.contain),
+            ),
+            const SizedBox(width: 12),
+
+            // ── Title + law number + count ────────────────────
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    category.title ?? '',
+                    style: const TextStyle(
+                      color: appDarkColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      height: 1.3,
+                    ),
+                  ),
+             
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        width: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 13,
+                          color: Colors.green,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        _countText(category),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black45,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // ── Chevron ───────────────────────────────────────
+            Container(
+              height: 28,
+              width: 28,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0F4F8),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.chevron_right_rounded,
+                color: appDarkColor,
+                size: 18,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
