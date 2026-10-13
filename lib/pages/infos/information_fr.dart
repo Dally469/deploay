@@ -223,20 +223,20 @@ class _InformationFRState extends State<InformationFR> {
               ),
             ),
           ),
-          _buildInfoCard(
-            title: 'POLITIQUE DE DECENTRALISATION',
-            actionLabel: 'Cliquez ici',
-            actionIcon: Icons.picture_as_pdf_rounded,
-            actionColor: Colors.redAccent,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DecentralizationFR(),
-                ),
-              );
-            },
-          ),
+          // _buildInfoCard(
+          //   title: 'POLITIQUE DE DECENTRALISATION',
+          //   actionLabel: 'Cliquez ici',
+          //   actionIcon: Icons.picture_as_pdf_rounded,
+          //   actionColor: Colors.redAccent,
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const DecentralizationFR(),
+          //       ),
+          //     );
+          //   },
+          // ),
           _buildInfoCard(
             title: 'LOIS',
             actionLabel: 'Cliquez ici',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ralga/pages/about.dart'; // adjust path if needed
 import 'package:ralga/pages/infos/information_en.dart';
 import 'package:ralga/pages/infos/information_fr.dart';
 import 'package:ralga/pages/infos/information_rw.dart';
@@ -6,7 +7,6 @@ import 'package:ralga/utils/colors.dart';
 
 class Language extends StatefulWidget {
   const Language({Key? key}) : super(key: key);
-
   @override
   State<Language> createState() => _LanguageState();
 }
@@ -70,6 +70,24 @@ class _LanguageState extends State<Language> {
         ),
       ),
     );
+  }
+
+  Widget _flag(String asset) {
+    return Container(
+      width: 36,
+      height: 36,
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
+        border: Border.all(color: overlayColor, width: 2.5),
+      ),
+      child: Image.asset(asset),
+    );
+  }
+
+  void _open(Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 
   @override
@@ -143,7 +161,7 @@ class _LanguageState extends State<Language> {
                           Image.asset('assets/images/logo.png', scale: 3.2),
                           const SizedBox(height: 14),
                           const Text(
-                            'Rwanda Local Government Law',
+                            'Rwanda Association of Local Government Authorities',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: appDarkColor,
@@ -179,74 +197,55 @@ class _LanguageState extends State<Language> {
                           _languageTile(
                             title: 'English',
                             subtitle: 'Open in English',
-                            icon: Container(
-                              width: 36,
-                              height: 36,
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: overlayColor, width: 2.5),
-                              ),
-                              child: Image.asset('assets/images/flaguk.png'),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const InformationEN(),
-                                ),
-                              );
-                            },
+                            icon: _flag('assets/images/flaguk.png'),
+                            onTap: () => _open(const InformationEN()),
                           ),
                           _languageTile(
                             title: 'Kinyarwanda',
                             subtitle: 'Fungura mu Kinyarwanda',
-                            icon: Container(
-                              width: 36,
-                              height: 36,
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: overlayColor, width: 2.5),
-                              ),
-                              child: Image.asset('assets/images/flagrw.png'),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const InformationRW(),
-                                ),
-                              );
-                            },
+                            icon: _flag('assets/images/flagrw.png'),
+                            onTap: () => _open(const InformationRW()),
                           ),
                           _languageTile(
                             title: 'Français',
                             subtitle: 'Ouvrir en Français',
-                           icon: Container(
-                              width: 36,
-                              height: 36,
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: overlayColor, width: 2.5),
+                            icon: _flag('assets/images/flagfr.png'),
+                            onTap: () => _open(const InformationFR()),
+                          ),
+
+                          const SizedBox(height: 4),
+
+                          // About / Source / Disclaimer link
+                          InkWell(
+                            onTap: () => _open(const AboutSourcesPage()),
+                            borderRadius: BorderRadius.circular(10),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
                               ),
-                              child: Image.asset('assets/images/flagfr.png'),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.info_outline_rounded,
+                                    size: 17,
+                                    color: appColor,
+                                  ),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    'About  •  Source  •  Disclaimer',
+                                    style: TextStyle(
+                                      color: appColor,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: appColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const InformationFR(),
-                                ),
-                              );
-                            },
                           ),
                         ],
                       ),

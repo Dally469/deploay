@@ -8,9 +8,8 @@ import 'package:ralga/pages/infos/laws-category-en.dart';
 import 'package:ralga/utils/colors.dart';
 import 'package:ralga/widgets/app-icon.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:share_plus/share_plus.dart';
-
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+ 
 
 
 class Decentralization extends StatefulWidget {
@@ -30,32 +29,32 @@ class _DecentralizationState extends State<Decentralization> {
         Container(
           height: height + 145,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
               appDarkColor,
               appDarkColor,
             ]),
           ), // Background
           child: Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 25),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 25),
+                  margin: const EdgeInsets.only(top: 25),
                   child: Row(
                     children: [
                       GestureDetector(
                         onTap: (() => Navigator.pop(context)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_back_ios,
                           color: whiteColor,
                         ),
                       ),
                       Container(
                         width: 200,
-                        child: Text("Decentralization",
+                        child: const Text("Decentralization",
                             overflow: TextOverflow.visible,
                             style: TextStyle(
                                 color: whiteColor,
@@ -66,22 +65,21 @@ class _DecentralizationState extends State<Decentralization> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 20),
                   child: Row(
                     children: [
                       InkWell(
                           onTap: () {
-                            Share.share('https://ralgaapi.awm-global.org/public/assets/pdf/english_decentralization_2012');
-                            //onButtonTap(Share.whatsapp);
+                             //onButtonTap(Share.whatsapp);
                             //Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryFR()),);
                           },
-                          child: AppIcon(icon: Icons.share)),
+                          child: const AppIcon(icon: Icons.share)),
                       InkWell(
                           onTap: () {
 
-                            Navigator.push( context,MaterialPageRoute( builder: (context) => LawsCategoryEN()),);
+                            Navigator.push( context,MaterialPageRoute( builder: (context) => const LawsCategoryEN()),);
                           },
-                          child: AppIcon(icon: Icons.arrow_forward)),
+                          child: const AppIcon(icon: Icons.arrow_forward)),
                     ],
                   ),
                 )
@@ -99,20 +97,20 @@ class _DecentralizationState extends State<Decentralization> {
               InkWell(
                 onTap: () {
                   setState(() {
-                    Navigator.push( context, MaterialPageRoute(builder: (context) => DecentralizationEN()),);
+                    Navigator.push( context, MaterialPageRoute(builder: (context) => const DecentralizationEN()),);
                   });
                 },
                 child: Container(
                   height: 50,
                   width: 110,
                   color: whiteColor,
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(width: 4,),
-                      isNew == false ? Icon(Icons.check_circle, size: 20, color: appColor,) : Icon(Icons.check_circle, color: whiteColor,),
-                      Column(
+                      const SizedBox(width: 4,),
+                      isNew == false ? const Icon(Icons.check_circle, size: 20, color: appColor,) : const Icon(Icons.check_circle, color: whiteColor,),
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -128,7 +126,7 @@ class _DecentralizationState extends State<Decentralization> {
                                   fontSize: 20)),
                         ],
                       ),
-                      Icon(Icons.check_circle, color: whiteColor,)
+                      const Icon(Icons.check_circle, color: whiteColor,)
                     ],
                   ),
                 ),
@@ -143,13 +141,13 @@ class _DecentralizationState extends State<Decentralization> {
                   height: 50,
                   width: 110,
                   color: whiteColor,
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(width: 4,),
-                      isNew == true ? Icon(Icons.check_circle, size: 20, color: appColor,) : Icon(Icons.check_circle, color: whiteColor,),
-                      Column(
+                      const SizedBox(width: 4,),
+                      isNew == true ? const Icon(Icons.check_circle, size: 20, color: appColor,) : const Icon(Icons.check_circle, color: whiteColor,),
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -165,7 +163,7 @@ class _DecentralizationState extends State<Decentralization> {
                                   fontSize: 20)),
                         ],
                       ),
-                      Icon(Icons.check_circle, color: whiteColor,)
+                      const Icon(Icons.check_circle, color: whiteColor,)
                     ],
                   ),
                 ),
@@ -173,20 +171,20 @@ class _DecentralizationState extends State<Decentralization> {
               InkWell(
                 onTap: () {
                   setState(() {
-                    Navigator.push( context, MaterialPageRoute(builder: (context) => DecentralizationEN()),);
+                    Navigator.push( context, MaterialPageRoute(builder: (context) => const DecentralizationEN()),);
                   });
                 },
                 child: Container(
                   height: 50,
                   width: 110,
                   color: whiteColor,
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(width: 4,),
-                      isNew == false ? Icon(Icons.check_circle, size: 20, color: appColor,) : Icon(Icons.check_circle, color: whiteColor,),
-                      Column(
+                      const SizedBox(width: 4,),
+                      isNew == false ? const Icon(Icons.check_circle, size: 20, color: appColor,) : const Icon(Icons.check_circle, color: whiteColor,),
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -202,7 +200,7 @@ class _DecentralizationState extends State<Decentralization> {
                                   fontSize: 20)),
                         ],
                       ),
-                      Icon(Icons.check_circle, color: whiteColor,)
+                      const Icon(Icons.check_circle, color: whiteColor,)
                     ],
                   ),
                 ),
@@ -222,10 +220,10 @@ class _DecentralizationState extends State<Decentralization> {
         backgroundColor: whiteColor,
         body:Container(
             color: appColor,
-            margin: EdgeInsets.all(3),
-            child: SfPdfViewer.network(
-                'https://ralgaapi.awm-global.org/public/assets/pdf/english_decentralization_2012.pdf'))
-            );
+            margin: const EdgeInsets.all(3),
+            child: isNew == true ? const DecentralizationEN() : const DecentralizationEN()
+        )
+    );
   }
 
 }

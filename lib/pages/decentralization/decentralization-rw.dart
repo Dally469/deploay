@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:ralga/utils/colors.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+ // import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class DecentralizationRW extends StatefulWidget {
   const DecentralizationRW({Key? key}) : super(key: key);
@@ -17,7 +16,7 @@ class _DecentralizationRWState extends State<DecentralizationRW> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // PDF view controller + loading/error state
-  final PdfViewerController _pdfController = PdfViewerController();
+  // final PdfViewerController _pdfController = PdfViewerController();
   bool _isLoading = true;
   bool _hasError = false;
   String? _errorMessage;
@@ -112,8 +111,7 @@ class _DecentralizationRWState extends State<DecentralizationRW> {
                     ),
                     IconButton(
                       onPressed: () {
-                        Share.share(_currentUrl);
-                      },
+                       },
                       icon: const Icon(Icons.share, color: whiteColor),
                     ),
                   ],
@@ -196,29 +194,29 @@ class _DecentralizationRWState extends State<DecentralizationRW> {
       children: [
         // The actual PDF viewer (kept alive even during overlay states so
         // SfPdfViewer's own progressive rendering keeps working).
-        SfPdfViewer.network(
-          _currentUrl,
-          key: ValueKey('${_currentUrl}_$_loadAttempt'),
-          controller: _pdfController,
-          canShowPaginationDialog: true,
-          onDocumentLoaded: (details) {
-            if (!mounted) return;
-            setState(() {
-              _isLoading = false;
-              _hasError = false;
-            });
-          },
-          onDocumentLoadFailed: (details) {
-            if (!mounted) return;
-            setState(() {
-              _isLoading = false;
-              _hasError = true;
-              _errorMessage = details.description.isNotEmpty
-                  ? details.description
-                  : "Ntibyashobotse gufungura iyi nyandiko.";
-            });
-          },
-        ),
+        // SfPdfViewer.network(
+        //   _currentUrl,
+        //   key: ValueKey('${_currentUrl}_$_loadAttempt'),
+        //   controller: _pdfController,
+        //   canShowPaginationDialog: true,
+        //   onDocumentLoaded: (details) {
+        //     if (!mounted) return;
+        //     setState(() {
+        //       _isLoading = false;
+        //       _hasError = false;
+        //     });
+        //   },
+        //   onDocumentLoadFailed: (details) {
+        //     if (!mounted) return;
+        //     setState(() {
+        //       _isLoading = false;
+        //       _hasError = true;
+        //       _errorMessage = details.description.isNotEmpty
+        //           ? details.description
+        //           : "Ntibyashobotse gufungura iyi nyandiko.";
+        //     });
+        //   },
+        // ),
 
         // Loading overlay
         if (_isLoading && !_hasError)

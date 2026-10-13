@@ -155,7 +155,7 @@ class _KglHomeENState extends State<KglHomeEN> {
                         MaterialPageRoute(
                           builder: (context) => LawsEN(
                             chapters[position].id.toString(),
-                            chapters[position].description ?? '',
+                            chapters[position].title ?? '',
                           ),
                         ),
                       );

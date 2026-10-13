@@ -11,7 +11,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,27 +27,23 @@ class MyApp extends StatelessWidget {
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
-
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
+  // Max width of the splash content. Keeps the layout phone-sized on
+  // iPad / tablets instead of stretching across the whole screen.
+  static const double _maxContentWidth = 480;
+
   late final AnimationController _controller;
 
-  // Logo: scales up and fades in over the first half of the timeline.
   late final Animation<double> _logoScale;
   late final Animation<double> _logoOpacity;
-
-  // Title: fades + slides up slightly, starting after the logo.
   late final Animation<double> _titleOpacity;
   late final Animation<Offset> _titleSlide;
-
-  // Subtitle: fades in last.
   late final Animation<double> _subtitleOpacity;
-
-  // Progress bar fade-in.
   late final Animation<double> _progressOpacity;
 
   Timer? _navigationTimer;
@@ -139,11 +134,15 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
+    // Width used for all proportional sizing. On phones this equals the
+    // screen width; on iPad it is capped so nothing balloons.
+    final baseWidth =
+        size.width > _maxContentWidth ? _maxContentWidth : size.width;
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: Stack(
         children: [
-          // Soft brand-tinted gradient backdrop, subtle rather than loud.
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
@@ -160,13 +159,12 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
 
-          // Large soft brand circle behind the logo for depth.
           Positioned(
-            top: -size.width * 0.35,
-            right: -size.width * 0.35,
+            top: -baseWidth * 0.35,
+            right: -baseWidth * 0.35,
             child: Container(
-              width: size.width * 0.9,
-              height: size.width * 0.9,
+              width: baseWidth * 0.9,
+              height: baseWidth * 0.9,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: appColor.withOpacity(0.05),
@@ -174,11 +172,11 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
           Positioned(
-            bottom: -size.width * 0.4,
-            left: -size.width * 0.3,
+            bottom: -baseWidth * 0.4,
+            left: -baseWidth * 0.3,
             child: Container(
-              width: size.width * 0.8,
-              height: size.width * 0.8,
+              width: baseWidth * 0.8,
+              height: baseWidth * 0.8,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: appDarkColor.withOpacity(0.04),
@@ -187,97 +185,99 @@ class _SplashScreenState extends State<SplashScreen>
           ),
 
           SafeArea(
-            child: AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Spacer(flex: 3),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: _maxContentWidth),
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Spacer(flex: 3),
 
-                    // Logo
-                    Opacity(
-                      opacity: _logoOpacity.value,
-                      child: Transform.scale(
-                        scale: _logoScale.value,
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: whiteColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: appColor.withOpacity(0.15),
-                                blurRadius: 30,
-                                spreadRadius: 4,
+                        // Logo
+                        Opacity(
+                          opacity: _logoOpacity.value,
+                          child: Transform.scale(
+                            scale: _logoScale.value,
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: whiteColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: appColor.withOpacity(0.15),
+                                    blurRadius: 30,
+                                    spreadRadius: 4,
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          child: Image.asset(
-                            "assets/images/logo.png",
-                            width: size.width * 0.28,
-                            height: size.width * 0.28,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 36),
-
-                    // Title
-                    Opacity(
-                      opacity: _titleOpacity.value,
-                      child: Transform.translate(
-                        offset: Offset(
-                          0,
-                          _titleSlide.value.dy * 20,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 36),
-                          child: Text(
-                            "Rwanda Local Government Law",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: appColor,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              height: 1.3,
+                              child: Image.asset(
+                                "assets/images/logo.png",
+                                width: baseWidth * 0.28,
+                                height: baseWidth * 0.28,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    const SizedBox(height: 10),
+                        const SizedBox(height: 36),
 
-                    // Subtitle
-                    Opacity(
-                      opacity: _subtitleOpacity.value,
-                      child: Text(
-                        "RALGA",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: appDarkColor.withOpacity(0.6),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 2.5,
+                        // Title
+                        Opacity(
+                          opacity: _titleOpacity.value,
+                          child: Transform.translate(
+                            offset: Offset(0, _titleSlide.value.dy * 20),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 36),
+                              child: Text(
+                                "Rwanda Association of Local Government Authorities",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: appColor,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
 
-                    const Spacer(flex: 2),
+                        const SizedBox(height: 10),
 
-                    // Progress indicator
-                    Opacity(
-                      opacity: _progressOpacity.value,
-                      child: const _PulsingProgressBar(),
-                    ),
+                        // Subtitle
+                        Opacity(
+                          opacity: _subtitleOpacity.value,
+                          child: Text(
+                            "RALGA",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: appDarkColor.withOpacity(0.6),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 2.5,
+                            ),
+                          ),
+                        ),
 
-                    const SizedBox(height: 48),
-                  ],
-                );
-              },
+                        const Spacer(flex: 2),
+
+                        // Progress indicator
+                        Opacity(
+                          opacity: _progressOpacity.value,
+                          child: const _PulsingProgressBar(),
+                        ),
+
+                        const SizedBox(height: 48),
+                      ],
+                    );
+                  },
+                ),
+              ),
             ),
           ),
         ],
@@ -287,8 +287,7 @@ class _SplashScreenState extends State<SplashScreen>
 }
 
 /// Slim animated progress indicator: a track with a highlight that
-/// sweeps back and forth, replacing the generic SpinKit dependency
-/// with something on-brand and lighter weight.
+/// sweeps back and forth.
 class _PulsingProgressBar extends StatefulWidget {
   const _PulsingProgressBar();
 
@@ -330,8 +329,6 @@ class _PulsingProgressBarState extends State<_PulsingProgressBar>
                 Container(color: appColor.withOpacity(0.12)),
                 Align(
                   alignment: Alignment(
-                    // Sweeps from -1.6 to 1.6 so the highlight fully
-                    // exits each side before re-entering.
                     (_controller.value * 3.2) - 1.6,
                     0,
                   ),

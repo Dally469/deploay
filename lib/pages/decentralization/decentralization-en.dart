@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:ralga/utils/colors.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+ // import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class DecentralizationEN extends StatefulWidget {
   const DecentralizationEN({Key? key}) : super(key: key);
@@ -17,7 +16,7 @@ class _DecentralizationENState extends State<DecentralizationEN> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // PDF view controller + loading/error state
-  final PdfViewerController _pdfController = PdfViewerController();
+  // final PdfViewerController _pdfController = PdfViewerController();
   bool _isLoading = true;
   bool _hasError = false;
   String? _errorMessage;
@@ -108,7 +107,7 @@ class _DecentralizationENState extends State<DecentralizationEN> {
                     ),
                     IconButton(
                       onPressed: () {
-                        Share.share(_currentUrl);
+                        
                       },
                       icon: const Icon(Icons.share, color: whiteColor),
                     ),
@@ -190,29 +189,29 @@ class _DecentralizationENState extends State<DecentralizationEN> {
   Widget _buildPdfArea() {
     return Stack(
       children: [
-        SfPdfViewer.network(
-          _currentUrl,
-          key: ValueKey('${_currentUrl}_$_loadAttempt'),
-          controller: _pdfController,
-          canShowPaginationDialog: true,
-          onDocumentLoaded: (details) {
-            if (!mounted) return;
-            setState(() {
-              _isLoading = false;
-              _hasError = false;
-            });
-          },
-          onDocumentLoadFailed: (details) {
-            if (!mounted) return;
-            setState(() {
-              _isLoading = false;
-              _hasError = true;
-              _errorMessage = details.description.isNotEmpty
-                  ? details.description
-                  : "We couldn't open this document.";
-            });
-          },
-        ),
+        // SfPdfViewer.network(
+        //   _currentUrl,
+        //   key: ValueKey('${_currentUrl}_$_loadAttempt'),
+        //   controller: _pdfController,
+        //   canShowPaginationDialog: true,
+        //   onDocumentLoaded: (details) {
+        //     if (!mounted) return;
+        //     setState(() {
+        //       _isLoading = false;
+        //       _hasError = false;
+        //     });
+        //   },
+        //   onDocumentLoadFailed: (details) {
+        //     if (!mounted) return;
+        //     setState(() {
+        //       _isLoading = false;
+        //       _hasError = true;
+        //       _errorMessage = details.description.isNotEmpty
+        //           ? details.description
+        //           : "We couldn't open this document.";
+        //     });
+        //   },
+        // ),
 
         if (_isLoading && !_hasError)
           Container(

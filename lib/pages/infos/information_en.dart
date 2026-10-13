@@ -223,20 +223,20 @@ Widget _buildInfoCard({
               ),
             ),
           ),
-          _buildInfoCard(
-            title: 'DECENTRALIZATION POLICY',
-            actionLabel: 'Click here',
-            actionIcon: Icons.picture_as_pdf_rounded,
-            actionColor: Colors.redAccent,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DecentralizationEN(),
-                ),
-              );
-            },
-          ),
+          // _buildInfoCard(
+          //   title: 'DECENTRALIZATION POLICY',
+          //   actionLabel: 'Click here',
+          //   actionIcon: Icons.picture_as_pdf_rounded,
+          //   actionColor: Colors.redAccent,
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const DecentralizationEN(),
+          //       ),
+          //     );
+          //   },
+          // ),
           _buildInfoCard(
             title: 'LAWS',
             actionLabel: 'Click here',

@@ -222,20 +222,20 @@ class _InformationRWState extends State<InformationRW> {
               ),
             ),
           ),
-          _buildInfoCard(
-            title: 'Politike Ubuyobozi Bwegereye Abaturage',
-            actionLabel: 'Kanda hano',
-            actionIcon: Icons.picture_as_pdf_rounded,
-            actionColor: Colors.redAccent,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DecentralizationRW(),
-                ),
-              );
-            },
-          ),
+          // _buildInfoCard(
+          //   title: 'Politike Ubuyobozi Bwegereye Abaturage',
+          //   actionLabel: 'Kanda hano',
+          //   actionIcon: Icons.picture_as_pdf_rounded,
+          //   actionColor: Colors.redAccent,
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const DecentralizationRW(),
+          //       ),
+          //     );
+          //   },
+          // ),
           _buildInfoCard(
             title: 'AMATEGEKO',
             actionLabel: 'Kanda hano',

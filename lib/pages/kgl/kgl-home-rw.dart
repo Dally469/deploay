@@ -155,7 +155,7 @@ class _KglHomeRWState extends State<KglHomeRW> {
                         MaterialPageRoute(
                           builder: (context) => LawsRW(
                             chapters[position].id.toString(),
-                            chapters[position].description.toString(),
+                            chapters[position].title.toString(),
                           ),
                         ),
                       );
